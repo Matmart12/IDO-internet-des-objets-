@@ -274,9 +274,9 @@ app.delete('/sup_Resident_id', (req, res) => {
     });
 });
 
-app.delete('/sup_Actu_', (req, res) => {
-    const { mail } = req.params;
-    proj.query('DELETE FROM Resident WHERE mail = ?', [mail], (err, result) => {
+app.delete('/sup_Ville_id', (req, res) => {
+    const { id } = req.params;
+    proj.query('DELETE FROM Ville WHERE id = ?', [id], (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).send('Erreur serveur');
@@ -284,6 +284,120 @@ app.delete('/sup_Actu_', (req, res) => {
         res.send('Élément supprimé avec succès');
     });
 });
+
+app.delete('/sup_Actu_id', (req, res) => {
+    const { id } = req.params;
+    proj.query('DELETE FROM Actu WHERE id = ?', [id], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Erreur serveur');
+        }
+        res.send('Élément supprimé avec succès');
+    });
+});
+
+app.delete('/sup_Lien', (req, res) => {
+    const { idService, nomCate } = req.params;
+    proj.query('DELETE FROM Lien WHERE idService=? AND nomCategorie = ?', [idService,nomCate], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Erreur serveur');
+        }
+        res.send('Élément supprimé avec succès');
+    });
+});
+
+app.delete('/sup_Actu_', (req, res) => {
+    const { nom } = req.params;
+    proj.query('DELETE FROM Actu WHERE nom = ?', [mail], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Erreur serveur');
+        }
+        res.send('Élément supprimé avec succès');
+    });
+});
+
+app.put('/modif_Resident_nom', (req, res) => {
+    const { id } = req.params;
+    const { nom } = req.body; // Remplacez par vos champs
+
+    proj.query('UPDATE Resident SET nom = ? WHERE id = ?', 
+        [nom, id], 
+        (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Erreur serveur');
+            }
+            res.send('Élément modifié avec succès');
+        }
+    );
+});
+
+app.put('/modiResident_prenom', (req, res) => {
+    const { id } = req.params;
+    const { prenom} = req.body; // Remplacez par vos champs
+
+    proj.query('UPDATE Resident SET prenom = ? WHERE id = ?', 
+        [prenom, id], 
+        (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Erreur serveur');
+            }
+            res.send('Élément modifié avec succès');
+        }
+    );
+});
+
+app.put('/modif_Resident_mail', (req, res) => {
+    const { id } = req.params;
+    const { mail } = req.body; // Remplacez par vos champs
+
+    proj.query('UPDATE Resident SET mail = ? WHERE id = ?', 
+        [mail, id], 
+        (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Erreur serveur');
+            }
+            res.send('Élément modifié avec succès');
+        }
+    );
+});
+
+app.put('/modif_Resident_mdp', (req, res) => {
+    const { id } = req.params;
+    const { mdp } = req.body; // Remplacez par vos champs
+
+    proj.query('UPDATE Resident SET mdp = ? WHERE id = ?', 
+        [mdp, id], 
+        (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Erreur serveur');
+            }
+            res.send('Élément modifié avec succès');
+        }
+    );
+});
+
+app.put('/modifier_element/:id', (req, res) => {
+    const { id } = req.params;
+    const { colonne1, colonne2 } = req.body; // Remplacez par vos champs
+
+    proj.query('UPDATE votre_table SET colonne1 = ?, colonne2 = ? WHERE id = ?', 
+        [colonne1, colonne2, id], 
+        (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Erreur serveur');
+            }
+            res.send('Élément modifié avec succès');
+        }
+    );
+});
+
 
 const PORT = 5000;
 app.get('/', (req, res) => {

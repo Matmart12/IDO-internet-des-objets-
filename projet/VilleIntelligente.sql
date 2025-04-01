@@ -41,7 +41,7 @@ FOREIGN KEY fk_catégorie(nomCatégorie) REFERENCES Catégorie(nom));
 
 CREATE TABLE Actu(
 id INT PRIMARY KEY AUTO_INCREMENT, 
-nom CHAR(40) PRIMARY KEY,
+nom CHAR(40),
 descrip CHAR(500),
 apparition DATE,
 idVille INT,
