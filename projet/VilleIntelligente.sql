@@ -1,20 +1,20 @@
 use proj;
 
 Create TABLE Ville(
-id INT PRIMARY KEY,
+id INT PRIMARY KEY AUTO_INCREMENT,
 nom CHAR(40),
 Pays CHAR(40),
 département CHAR(40));
 
 CREATE TABLE Residence(
-id INT PRIMARY KEY,
+id INT PRIMARY KEY AUTO_INCREMENT,
 numero INT,
 Rue CHAR(40),
 idVille INT,
 FOREIGN KEY fk_ville(idVille) REFERENCES Ville(id));
 
 CREATE TABLE Resident(
-id INT PRIMARY KEY,
+id INT PRIMARY KEY AUTO_INCREMENT,
 prenom CHAR(40),
 nom CHAR(40),
 mail CHAR(50),
@@ -24,7 +24,7 @@ abonnement CHAR(20));
 
 
 CREATE TABLE Service(
-id INT PRIMARY KEY,
+id INT PRIMARY KEY AUTO_INCREMENT,
 nom CHAR(40),
 descrip CHAR(500),
 idVille INT,
@@ -40,6 +40,7 @@ FOREIGN KEY fk_service(idService) REFERENCES Service(id),
 FOREIGN KEY fk_catégorie(nomCatégorie) REFERENCES Catégorie(nom));
 
 CREATE TABLE Actu(
+id INT PRIMARY KEY AUTO_INCREMENT, 
 nom CHAR(40) PRIMARY KEY,
 descrip CHAR(500),
 apparition DATE,

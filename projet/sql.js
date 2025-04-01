@@ -252,7 +252,38 @@ app.get('/Recherche_Actu_Ville_temps', (req, res) => {
     })
 });
 
+app.delete('/sup_Resident_mail', (req, res) => {
+    const { mail } = req.params;
+    proj.query('DELETE FROM Resident WHERE mail = ?', [mail], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Erreur serveur');
+        }
+        res.send('Élément supprimé avec succès');
+    });
+});
 
+app.delete('/sup_Resident_id', (req, res) => {
+    const { mail } = req.params;
+    proj.query('DELETE FROM Resident WHERE id = ?', [mail], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Erreur serveur');
+        }
+        res.send('Élément supprimé avec succès');
+    });
+});
+
+app.delete('/sup_Actu_', (req, res) => {
+    const { mail } = req.params;
+    proj.query('DELETE FROM Resident WHERE mail = ?', [mail], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Erreur serveur');
+        }
+        res.send('Élément supprimé avec succès');
+    });
+});
 
 const PORT = 5000;
 app.get('/', (req, res) => {
