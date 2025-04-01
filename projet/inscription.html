@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/inscription.css">
+    <title>Formulaire d'inscription</title>
+</head>
+
+<body>
+    <div id=divdroit> <img src="https://www.educol.net/coloriage-maison-dl28263.jpg" width="40px" alt=""></a></div>
+
+    <legend>
+        <h1>Formulaire d'inscription</h1>
+        <p>Les champs marqués d'une étoiles sont obligatoires (la photo ne l'est pas)</p>
+        <table>
+            <tr>
+                <td colspan="2"><input id="email" placeholder="email*" type="email" name="email" required></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input id="password" placeholder="password*" type="password" name="password"
+                        required></button></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input placeholder="prenom*" type="text" name="prenom" required> </td>
+            </tr>
+            <tr>
+                <td colspan="2"><input placeholder="nom*" type="text" name="nom" required></td>
+            </tr>
+            <tr>
+                <td colspan="2">Genre* :
+                    <input type="radio" name="genre" value="Homme" class="pointer" required><span class="pointer"
+                        onclick="Checked('Homme')">Homme</span>
+                    <input type="radio" name="genre" value="Femme" class="pointer" required><span class="pointer"
+                        onclick="Checked('Femme')">Femme</span>
+                    <input type="radio" name="genre" value="Autre" class="pointer" required><span class="pointer"
+                        onclick="Checked('Autre')">Autre</span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><input placeholder="age*" type="number" min="13" max="110" name="age" required></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input placeholder="ville*" name="ville" required></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input placeholder="rue*" name="nom de la rue" required></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input placeholder="numéro de rue*" type="number" min="1" name="numéro de rue" required>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><input input id="id1" type="file" accept=".png" name="photo"></td>
+            </tr>
+            <tr>
+                <td><button id="inscription" type="button" onclick="Connect()">Se connecter ?</button></td>
+                <td><button id="inscription" type="submit" onclick="mail()">envoyer mail</button></td>
+            </tr>
+        </table>
+    </legend>
+    </form>
+    <script>
+        const mysql = require("mysql2");
+        const connection = mysql.createConnection({
+            host: 'localhost',
+            user: 'root',
+            password: 'cytech0001',
+            database: 'connectees'
+        });
+        connection.connect(err => {
+            if (err) {
+                console.log('erreur de connexion : ', err);
+                return;
+            }
+            console.log('connecté à la base de données MySQL');
+        });
+        module.exports = connection;
+        app.listen(port, () => {
+            function mail() {
+                var test = document.getElementById('email') // à terminer car oskour
+                alert(test.value)
+                if (test) {
+                    // Importer la bibliothèque Nodemailer
+                    const nodemailer = require('nodemailer');
+
+                    // Créer un objet transporteur
+                    const transporter = nodemailer.createTransport({
+                        host: 'gmail',
+                        port: 587,
+                        secure: false, // utiliser SSL
+                        auth: {
+                            user: 'projetcy395@gmail.com',
+                            pass: 'Groupeinfo$2004',
+                        }
+                    });
+
+                    // Configurer l'objet mailOptions
+                    const mailOptions = {
+                        from: 'projetcy395@gmail.com',
+                        to: test.value,
+                        subject: 'vérification de compte',
+                        text: "Votre compte est vérifié"
+                    };
+
+                    // Envoyer l'email
+                    transporter.sendMail(mailOptions, function (error, info) {
+                        if (error) {
+                            console.log('Erreur:', error);
+                            console.error(error.stack);
+                        } else {
+                            console.log('Email envoyé:', info.response);
+                        }
+                    });
+                }
+
+            }
+document.getElementById()
+            function Accueil() {
+                window.location.href = "../page_connexion.php";
+            }
+            function Connect() {
+                window.location.href = "connexion.php";
+            }
+            function Checked(valeur) {
+                var radio = document.getElementsByName('genre');
+                for (var i = 0; i < radio.length; i++) {
+                    if (radio[i].value == valeur) {
+                        radio[i].checked = true;
+                        break;
+                    }
+                }
+            }
+            function Password() {
+                var password = document.getElementById("password");
+                if (password.type === "password")
+                    password.type = "text";
+                else
+                    password.type = "password";
+            }
+        })
+
+    </script>
+</body>
+
+</html>
