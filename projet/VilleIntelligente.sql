@@ -22,6 +22,7 @@ mdp CHAR(20),
 age INT,
 abonnement CHAR(20),
 idResidence INT,
+adressephoto CHAR(50),
 FOREIGN KEY fk_Residence(idResidence) REFERENCES Residence(id));
 
 

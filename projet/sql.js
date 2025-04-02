@@ -20,8 +20,8 @@ proj.connect(err => {
 app.use(express.json());
 //les noms sont à la premiere ligne avec le / et représente comment la recherche est faite (pour créer, il faut mettre tous les paramètres dispo)
 app.post('/Creer_Resident', (req, res) => {
-    const { prénom, nom, mail, mdp, age } = req.body;
-    proj.query('INSERT INTO Resident (prenom, nom, mail, mdp, age, abonnement) VALUES(?,?,?,?,?,?)', [prénom, nom, mail, mdp, age, "vérification"], (err, result) => {
+    const { prénom, nom, mail, mdp, age, genre, adressephoto, idResidence } = req.body;
+    proj.query('INSERT INTO Resident (prenom, nom, mail, mdp, age, genre, abonnement, adressephoto, idResidence) VALUES(?,?,?,?,?,?,?,?,?)', [prénom, nom, mail, mdp, age, genre, "vérification", adressephoto, idResidence], (err, result) => {
         if (err) {
             console.error(err);
             res.status(500).send('erreur serveur');

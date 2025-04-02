@@ -112,7 +112,8 @@
             const ville = document.getElementById("ville").value;
             const departement = document.getElementById("departement").value;
             const rue = document.getElementById("rue").value;
-            const numrue = document.getElementById("numrue").value; 
+            const numrue = document.getElementById("numrue").value;
+            const adressephoto=mail+".png";
             const idVille = recupidVille(ville, departement);
             if (idVille >= 0) {
                 const idResidence = recupidResidence(idVille, rue, numrue);
@@ -124,6 +125,7 @@
                     formData.append("nom", nom);
                     formData.append("genre", genre);
                     formData.append("age", age);
+                    formData.append("adressephoto",)
                     formData.append("idResidence", idResidence);
                 };
                 fetch('http://localhost:5000/Creer_Resident', {
@@ -135,6 +137,9 @@
                     .then(data => alert(data))
                     .catch(error => console.error('Erreur:', error));
             }
+            /*
+            à rajouter la création d'un dossier où l'on met les photos
+            */
         }
 
 
