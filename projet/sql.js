@@ -318,6 +318,22 @@ app.delete('/sup_Actu_nom', (req, res) => {
     });
 });
 
+ app.put('/modif_Resident_genre', (req, res) => {
+    const { id } = req.params;
+    const { genre} = req.body; 
+
+    proj.query('UPDATE Resident SET genre = ? WHERE id = ?', 
+        [genre, id], 
+        (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Erreur serveur');
+            }
+            res.send('Élément modifié avec succès');
+        }
+    );
+});
+
 app.put('/modif_Resident_nom', (req, res) => {
     const { id } = req.params;
     const { nom } = req.body; 
