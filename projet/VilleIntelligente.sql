@@ -9,7 +9,7 @@ département CHAR(40));
 CREATE TABLE Residence(
 id INT PRIMARY KEY AUTO_INCREMENT,
 numero INT,
-Rue CHAR(40),
+rue CHAR(40),
 idVille INT,
 FOREIGN KEY fk_ville(idVille) REFERENCES Ville(id));
 
@@ -20,7 +20,9 @@ nom CHAR(40),
 mail CHAR(50),
 mdp CHAR(20),
 age INT,
-abonnement CHAR(20));
+abonnement CHAR(20),
+idResidence INT,
+FOREIGN KEY fk_Residence(idResidence) REFERENCES Residence(id));
 
 
 CREATE TABLE Service(

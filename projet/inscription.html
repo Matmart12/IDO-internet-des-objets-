@@ -12,57 +12,133 @@
     <div id=divdroit> <img src="https://www.educol.net/coloriage-maison-dl28263.jpg" width="40px" alt=""></a></div>
 
     <legend>
-        <h1>Formulaire d'inscription</h1>
-        <p>Les champs marqués d'une étoiles sont obligatoires (la photo ne l'est pas)</p>
-        <table>
-            <tr>
-                <td colspan="2"><input id="email" placeholder="email*" type="email" name="email" required></td>
-            </tr>
-            <tr>
-                <td colspan="2"><input id="password" placeholder="password*" type="password" name="password"
-                        required></button></td>
-            </tr>
-            <tr>
-                <td colspan="2"><input placeholder="prenom*" type="text" name="prenom" required> </td>
-            </tr>
-            <tr>
-                <td colspan="2"><input placeholder="nom*" type="text" name="nom" required></td>
-            </tr>
-            <tr>
-                <td colspan="2">Genre* :
-                    <input type="radio" name="genre" value="Homme" class="pointer" required><span class="pointer"
-                        onclick="Checked('Homme')">Homme</span>
-                    <input type="radio" name="genre" value="Femme" class="pointer" required><span class="pointer"
-                        onclick="Checked('Femme')">Femme</span>
-                    <input type="radio" name="genre" value="Autre" class="pointer" required><span class="pointer"
-                        onclick="Checked('Autre')">Autre</span>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2"><input placeholder="age*" type="number" min="13" max="110" name="age" required></td>
-            </tr>
-            <tr>
-                <td colspan="2"><input placeholder="ville*" name="ville" required></td>
-            </tr>
-            <tr>
-                <td colspan="2"><input placeholder="rue*" name="nom de la rue" required></td>
-            </tr>
-            <tr>
-                <td colspan="2"><input placeholder="numéro de rue*" type="number" min="1" name="numéro de rue" required>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2"><input input id="id1" type="file" accept=".png" name="photo"></td>
-            </tr>
-            <tr>
-                <td><button id="inscription" type="button" onclick="Connect()">Se connecter ?</button></td>
-                <td><button id="inscription" type="submit" onclick="mail()">envoyer mail</button></td>
-            </tr>
-        </table>
+        <form onsubmit="ajouterElement(event)">
+            <h1>Formulaire d'inscription</h1>
+            <p>Les champs marqués d'une étoiles sont obligatoires (la photo ne l'est pas)</p>
+            <table>
+                <tr>
+                    <td colspan="2"><input id="email" placeholder="email*" type="email" name="email" required></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input id="password" placeholder="password*" type="password" name="password"
+                            required></button></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input id="prenom" placeholder="prenom*" type="text" name="prenom" required> </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input id="nom" placeholder="nom*" type="text" name="nom" required></td>
+                </tr>
+                <tr>
+                    <td colspan="2">Genre :
+                        <input type="radio" id="genre" name="genre" value="Homme" class="pointer" required><span
+                            class="pointer" onclick="Checked('Homme')">Homme</span>
+                        <input type="radio" id="genre" name="genre" value="Femme" class="pointer" required><span
+                            class="pointer" onclick="Checked('Femme')">Femme</span>
+                        <input type="radio" id="genre" name="genre" value="Autre" class="pointer" required><span
+                            class="pointer" onclick="Checked('Autre')">Autre</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input id="age" placeholder="age*" type="number" min="13" max="110" name="age"
+                            required>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input id="departement" placeholder="departement" name="departement" required></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input id="ville" placeholder="ville*" name="ville" required></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input id="rue" placeholder="rue*" name="nom de la rue" required></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input id="numrue" placeholder="numéro de rue*" type="number" min="1"
+                            name="numéro de rue" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input input id="id1" type="file" accept=".png" name="photo"></td>
+                </tr>
+                <tr>
+                    <td><button id="connexion" type="button" onclick="Connect()">Se connecter ?</button></td>
+                    <td><button id="inscription" type="submit">envoyer mail</button></td>
+                </tr>
+            </table>
     </legend>
     </form>
     <script>
-        const mysql = require("mysql2");
+        async function recupidVille(nom, departement) {
+            try {
+                const response = await fetch(`http://localhost:5000/Recherche_Ville_nom_departement?nom=${nom}&departement=${departement}`);
+
+                const data = await response.json();
+
+                if (!data.ville) {
+                    console.log('Aucune ville trouvée.');
+                    return -1;
+                }
+
+                const villeId = data.ville.id; // Récupération de l'ID
+                console.log('ID de la ville :', villeId);
+                return villeId;
+
+            } catch (error) { console.error('Erreur:', error) };
+        }
+
+        async function recupidResidence(idVille, rue, numrue) {
+            try {
+                const response = await fetch(`http://localhost:5000/Recherche_Residence_ville_num_rue?num=${numrue}&idv=${idVille}&rue=${rue}`)
+
+                const data = await response.json()
+                if (!data.residence) {
+                    console.log('Aucune résidence trouvée.');
+                    return -1;
+                }
+                const residenceId = data.residence.id; // Récupération de l'ID
+                console.log('ID de la résidence:', residenceId);
+                return residenceId;
+            } catch (error) { console.error('Erreur:', error) };
+        }
+        function ajouterElement(event) {
+            event.preventDefault();
+            const prenom = document.getElementById("prenom").value;
+            const nom = document.getElementById("nom").value;
+            const mail = document.getElementById("email").value;
+            const mdp = document.getElementById("password").value;
+            const genre = document.querySelector('input[id="genre"]:checked').value;
+            const age = document.getElementById("age").value;
+            const ville = document.getElementById("ville").value;
+            const departement = document.getElementById("departement").value;
+            const rue = document.getElementById("rue").value;
+            const numrue = document.getElementById("numrue").value; 
+            const idVille = recupidVille(ville, departement);
+            if (idVille >= 0) {
+                const idResidence = recupidResidence(idVille, rue, numrue);
+                if (idResidence >= 0) {
+                    const formData = new FormData;
+                    formData.append("mail", mail);
+                    formData.append("mdp", mdp);
+                    formData.append("prenom", prenom);
+                    formData.append("nom", nom);
+                    formData.append("genre", genre);
+                    formData.append("age", age);
+                    formData.append("idResidence", idResidence);
+                };
+                fetch('http://localhost:5000/Creer_Resident', {
+                    method: 'POST',
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(formData)
+                })
+                    .then(response => response.text())
+                    .then(data => alert(data))
+                    .catch(error => console.error('Erreur:', error));
+            }
+        }
+
+
+        /*const mysql = require("mysql2");
         const connection = mysql.createConnection({
             host: 'localhost',
             user: 'root',
@@ -115,31 +191,31 @@
                     });
                 }
 
-            }
-document.getElementById()
-            function Accueil() {
-                window.location.href = "../page_connexion.php";
-            }
-            function Connect() {
-                window.location.href = "connexion.php";
-            }
-            function Checked(valeur) {
-                var radio = document.getElementsByName('genre');
-                for (var i = 0; i < radio.length; i++) {
-                    if (radio[i].value == valeur) {
-                        radio[i].checked = true;
-                        break;
-                    }
+            }*/
+        document.getElementById()
+        function Accueil() {
+            window.location.href = "../page_connexion.php";
+        }
+        function Connect() {
+            window.location.href = "connexion.php";
+        }
+        function Checked(valeur) {
+            var radio = document.getElementsByName('genre');
+            for (var i = 0; i < radio.length; i++) {
+                if (radio[i].value == valeur) {
+                    radio[i].checked = true;
+                    break;
                 }
             }
-            function Password() {
-                var password = document.getElementById("password");
-                if (password.type === "password")
-                    password.type = "text";
-                else
-                    password.type = "password";
-            }
-        })
+        }
+        function Password() {
+            var password = document.getElementById("password");
+            if (password.type === "password")
+                password.type = "text";
+            else
+                password.type = "password";
+        }
+        //})
 
     </script>
 </body>
