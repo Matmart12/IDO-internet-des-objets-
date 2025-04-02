@@ -274,6 +274,17 @@ app.delete('/sup_Resident_id', (req, res) => {
     });
 });
 
+app.delete('/sup_Service_Ville', (req, res) => {
+    const { idVille } = req.params;
+    proj.query('DELETE FROM Service WHERE idVille = ?', [idVille], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Erreur serveur');
+        }
+        res.send('Élément supprimé avec succès');
+    });
+});
+
 app.delete('/sup_Ville_id', (req, res) => {
     const { id } = req.params;
     proj.query('DELETE FROM Ville WHERE id = ?', [id], (err, result) => {
@@ -382,12 +393,12 @@ app.put('/modif_Resident_mdp', (req, res) => {
     );
 });
 
-app.put('/modifier_element/:id', (req, res) => {
-    const { id } = req.params;
-    const { colonne1, colonne2 } = req.body; // Remplacez par vos champs
+app.put('/modif_Ville_nom', (req, res) => {
+    const { idVille } = req.params;
+    const { nom} = req.body; // Remplacez par vos champs
 
-    proj.query('UPDATE votre_table SET colonne1 = ?, colonne2 = ? WHERE id = ?', 
-        [colonne1, colonne2, id], 
+    proj.query('UPDATE Ville SET nom=? WHERE id = ?', 
+        [nom, idVille ], 
         (err, result) => {
             if (err) {
                 console.error(err);
@@ -398,6 +409,69 @@ app.put('/modifier_element/:id', (req, res) => {
     );
 });
 
+app.put('/modif_Service_nom', (req, res) => {
+    const { id } = req.params;
+    const {nom } = req.body; // Remplacez par vos champs
+
+    proj.query('UPDATE Service SET nom = ? WHERE id = ?', 
+        [nom, id], 
+        (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Erreur serveur');
+            }
+            res.send('Élément modifié avec succès');
+        }
+    );
+});
+
+app.put('/modif_Service_Description', (req, res) => {
+    const { id } = req.params;
+    const {descrip } = req.body; // Remplacez par vos champs
+
+    proj.query('UPDATE Service SET descrip = ? WHERE id = ?', 
+        [descrip, id], 
+        (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Erreur serveur');
+            }
+            res.send('Élément modifié avec succès');
+        }
+    );
+});
+
+app.put('/modif_Actu_nom', (req, res) => {
+    const { id } = req.params;
+    const {nom } = req.body; // Remplacez par vos champs
+
+    proj.query('UPDATE Actu SET nom = ? WHERE id = ?', 
+        [nom, id], 
+        (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Erreur serveur');
+            }
+            res.send('Élément modifié avec succès');
+        }
+    );
+});
+
+app.put('/modif_Actu_Descrip', (req, res) => {
+    const { id } = req.params;
+    const {descrip } = req.body; // Remplacez par vos champs
+
+    proj.query('UPDATE Actu SET descrip = ? WHERE id = ?', 
+        [descrip, id], 
+        (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Erreur serveur');
+            }
+            res.send('Élément modifié avec succès');
+        }
+    );
+});
 
 const PORT = 5000;
 app.get('/', (req, res) => {
