@@ -398,6 +398,22 @@ app.put('/modif_Resident_mdp', (req, res) => {
     );
 });
 
+app.put('/modif_Resident_abonnement', (req, res) => {
+    const { id } = req.params;
+    const { abonnement } = req.body; // Remplacez par vos champs
+
+    proj.query('UPDATE Resident SET abonnement = ? WHERE id = ?', 
+        [abonnement, id], 
+        (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Erreur serveur');
+            }
+            res.send('Élément modifié avec succès');
+        }
+    );
+});
+
 app.put('/modif_Ville_nom', (req, res) => {
     const { idVille } = req.params;
     const { nom} = req.body; // Remplacez par vos champs
