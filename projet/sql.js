@@ -1,36 +1,109 @@
 const express = require('express');
 const mysql = require("mysql2");
 const app = express();
+
 const proj = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'cytech0001',
-    database: 'connectees'
+    password: 'cytech0001', // Remplace par ton propre mot de passe
+    database: 'proj'
 });
 
-
-proj.connect(err => {
+proj.connect(async (err) => {
     if (err) {
-        console.log('erreur de connexion : ', err);
+        console.error('❌ Erreur de connexion :', err);
         return;
     }
-    console.log('connecté à la base de données MySQL');
+    console.log('✅ Connecté à la base de données MySQL');
+
+    // Fonction pour exécuter une requête SQL
+    const executeQuery = (query, tableName) => {
+        return new Promise((resolve, reject) => {
+            proj.query(query, (err, result) => {
+                if (err) {
+                    console.error(`❌ Erreur lors de la création de la table ${tableName} :`, err);
+                    reject(err);
+                } else {
+                    console.log(`✅ Table ${tableName} créée avec succès.`);
+                    resolve(result);
+                }
+            });
+        });
+    };
+
+    try {
+        await executeQuery(`
+            CREATE TABLE IF NOT EXISTS Ville (
+                id INT PRIMARY KEY AUTO_INCREMENT,
+                nom CHAR(40),
+                Pays CHAR(40),
+                département CHAR(40)
+            );`, "Ville");
+
+        await executeQuery(`
+            CREATE TABLE IF NOT EXISTS Residence (
+                id INT PRIMARY KEY AUTO_INCREMENT,
+                numero INT,
+                rue CHAR(40),
+                idVille INT,
+                FOREIGN KEY (idVille) REFERENCES Ville(id)
+            );`, "Residence");
+
+        await executeQuery(`
+            CREATE TABLE IF NOT EXISTS Resident (
+                id INT PRIMARY KEY AUTO_INCREMENT,
+                prenom CHAR(40),
+                nom CHAR(40),
+                mail CHAR(50),
+                mdp CHAR(20),
+                age INT,
+                abonnement CHAR(20),
+                idResidence INT,
+                adressephoto CHAR(50),
+                FOREIGN KEY (idResidence) REFERENCES Residence(id)
+            );`, "Resident");
+
+        await executeQuery(`
+            CREATE TABLE IF NOT EXISTS Service (
+                id INT PRIMARY KEY AUTO_INCREMENT,
+                nom CHAR(40),
+                descrip CHAR(254),
+                idVille INT,
+                FOREIGN KEY (idVille) REFERENCES Ville(id)
+            );`, "Service");
+
+        await executeQuery(`
+            CREATE TABLE IF NOT EXISTS Categorie (
+                nom CHAR(40) PRIMARY KEY
+            );`, "Categorie");
+
+        await executeQuery(`
+            CREATE TABLE IF NOT EXISTS Lien (
+                idService INT,
+                nomCategorie CHAR(40),
+                FOREIGN KEY (idService) REFERENCES Service(id),
+                FOREIGN KEY (nomCategorie) REFERENCES Categorie(nom)
+            );`, "Lien");
+
+        await executeQuery(`
+            CREATE TABLE IF NOT EXISTS Actu (
+                id INT PRIMARY KEY AUTO_INCREMENT, 
+                nom CHAR(40),
+                descrip CHAR(254),
+                apparition DATE,
+                idVille INT,
+                FOREIGN KEY (idVille) REFERENCES Ville(id)
+            );`, "Actu");
+
+        console.log("🎉 Toutes les tables ont été créées avec succès !");
+        proj.end(); // Ferme la connexion après l'exécution de toutes les requêtes
+
+    } catch (error) {
+        console.error("❌ Une erreur est survenue :", error);
+        proj.end();
+    }
 });
 
-app.use(express.json());
-//les noms sont à la premiere ligne avec le / et représente comment la recherche est faite (pour créer, il faut mettre tous les paramètres dispo)
-app.post('/Creer_Resident', (req, res) => {
-    const { prénom, nom, mail, mdp, age, genre, adressephoto, idResidence } = req.body;
-    proj.query('INSERT INTO Resident (prenom, nom, mail, mdp, age, genre, abonnement, adressephoto, idResidence) VALUES(?,?,?,?,?,?,?,?,?)', [prénom, nom, mail, mdp, age, genre, "vérification", adressephoto, idResidence], (err, result) => {
-        if (err) {
-            console.error(err);
-            res.status(500).send('erreur serveur');
-        }
-        else {
-            res.send('Utilisateur ajouté avec succès!')
-        }
-    })
-});
 
 app.post('/Creer_Ville', (req, res) => {
     const { nom, département } = req.body;

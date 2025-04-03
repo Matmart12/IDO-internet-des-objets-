@@ -69,6 +69,16 @@
     </legend>
     </form>
     <script>
+        function CreaVille(){
+            connection.query(createTableQuery, (err, result) => {
+            if (err) {
+                console.error('Erreur lors de la création de la table:', err);
+            } else {
+                console.log('✅ Table `utilisateurs` créée avec succès.');
+            }
+            connection.end(); // Ferme la connexion après la création de la table
+            });
+        }
         async function recupidVille(nom, departement) {
             try {
                 const response = await fetch(`http://localhost:5000/Recherche_Ville_nom_departement?nom=${nom}&departement=${departement}`);
@@ -115,7 +125,8 @@
             const numrue = document.getElementById("numrue").value;
             const adressephoto=mail+".png";
             const idVille = recupidVille(ville, departement);
-            if (idVille >= 0) {
+            CreaVille()
+            /*if (idVille >= 0) {
                 const idResidence = recupidResidence(idVille, rue, numrue);
                 if (idResidence >= 0) {
                     const formData = new FormData;
@@ -136,7 +147,7 @@
                     .then(response => response.text())
                     .then(data => alert(data))
                     .catch(error => console.error('Erreur:', error));
-            }
+            }*/
             /*
             à rajouter la création d'un dossier où l'on met les photos
             */
@@ -197,28 +208,11 @@
                 }
 
             }*/
-        document.getElementById()
         function Accueil() {
             window.location.href = "../page_connexion.php";
         }
         function Connect() {
             window.location.href = "connexion.php";
-        }
-        function Checked(valeur) {
-            var radio = document.getElementsByName('genre');
-            for (var i = 0; i < radio.length; i++) {
-                if (radio[i].value == valeur) {
-                    radio[i].checked = true;
-                    break;
-                }
-            }
-        }
-        function Password() {
-            var password = document.getElementById("password");
-            if (password.type === "password")
-                password.type = "text";
-            else
-                password.type = "password";
         }
         //})
 
