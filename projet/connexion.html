@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/inscription.css">
+    <title>Formulaire d'inscription</title>
+</head>
+
+<body>
+    <div id=divdroit> <img src="https://www.educol.net/coloriage-maison-dl28263.jpg" width="40px" alt=""></a></div>
+
+    <legend>
+        <form id="formConnexion">
+            <h1>Formulaire d'inscription</h1>
+            <p>Les champs marqués d'une étoiles sont obligatoires (la photo ne l'est pas)</p>
+            <table>
+                <tr>
+                    <td colspan="2"><input id="email" placeholder="email*" type="email" name="email" required></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input id="password" placeholder="password*" type="password" name="password"
+                            required></button></td>
+                </tr>
+            </table>
+    </legend>
+    </form>
+
+    <script scr="connexion.js">
+        console.log("Script chargé !");
+        document.getElementById('formInscription').addEventListener('submit', function (event) {
+            event.preventDefault();  // Empêche la soumission du formulaire classique
+            console.log("Le formulaire est soumis");
+            ajouterElement(event);
+        });
+
+
+
+        async function recupMDPResident(idVille, rue, numrue) {
+            try {
+                const response = await fetch(`http://localhost:5000/Recherche_Resident_mail?mail=${mail}`);
+                const data = await response.json();
+
+                if (data.length === 0) {
+                    console.log('Aucune résidence trouvée.');
+                    return -1;
+                }
+                return data[0];
+            } catch (error) {
+                console.error('Erreur:', error);
+                return -1;
+            }
+        }
+
+        async function ajouterElement(event) {
+            event.preventDefault();
+            console.log("Début de la fonction ajouterElement");
+            const mail = document.getElementById("email").value;
+            const mdp = document.getElementById("password").value;
+
+            const Resident = await recupMDPResident(mail);
+            if (Resident.id === mdp) {
+                
+            }
+        }
+        function Connect() {
+            window.location.href = "connexion.php";
+        }
+    </script>
+</body>
+
+</html>

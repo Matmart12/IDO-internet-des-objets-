@@ -2,6 +2,18 @@ const express = require('express');
 const mysql = require('mysql2');
 const app = express();
 const port = 5000;
+const session = require('express-session');
+
+app.use(session({
+    secret: 'maclesecrete', // Changez ceci par une chaîne complexe
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false } // Mettez `true` si vous utilisez HTTPS
+}));
+
+app.use(express.json());
+
+app.use('/api/auth', authRoutes);
 
 // Créer le pool de connexions
 const pool = mysql.createPool({
