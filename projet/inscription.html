@@ -12,7 +12,7 @@
     <div id=divdroit> <img src="https://www.educol.net/coloriage-maison-dl28263.jpg" width="40px" alt=""></a></div>
 
     <legend>
-        <form onsubmit="ajouterElement(event)">
+        <form id="formInscription">
             <h1>Formulaire d'inscription</h1>
             <p>Les champs marqués d'une étoiles sont obligatoires (la photo ne l'est pas)</p>
             <table>
@@ -63,160 +63,132 @@
                 </tr>
                 <tr>
                     <td><button id="connexion" type="button" onclick="Connect()">Se connecter ?</button></td>
-                    <td><button id="inscription" type="submit">envoyer mail</button></td>
+                    <td><button id="inscription" type="submit">s'inscrire</button></td>
                 </tr>
             </table>
     </legend>
     </form>
-    <script>
-        function CreaVille(){
-            connection.query(createTableQuery, (err, result) => {
-            if (err) {
-                console.error('Erreur lors de la création de la table:', err);
-            } else {
-                console.log('✅ Table `utilisateurs` créée avec succès.');
-            }
-            connection.end(); // Ferme la connexion après la création de la table
-            });
-        }
-        async function recupidVille(nom, departement) {
-            try {
-                const response = await fetch(`http://localhost:5000/Recherche_Ville_nom_departement?nom=${nom}&departement=${departement}`);
 
-                const data = await response.json();
+<script scr="inscription.js">
+    console.log("Script chargé !");
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("DOM chargé"); // Vérifie si le DOM est bien chargé
 
-                if (!data.ville) {
-                    console.log('Aucune ville trouvée.');
-                    return -1;
-                }
-
-                const villeId = data.ville.id; // Récupération de l'ID
-                console.log('ID de la ville :', villeId);
-                return villeId;
-
-            } catch (error) { console.error('Erreur:', error) };
-        }
-
-        async function recupidResidence(idVille, rue, numrue) {
-            try {
-                const response = await fetch(`http://localhost:5000/Recherche_Residence_ville_num_rue?num=${numrue}&idv=${idVille}&rue=${rue}`)
-
-                const data = await response.json()
-                if (!data.residence) {
-                    console.log('Aucune résidence trouvée.');
-                    return -1;
-                }
-                const residenceId = data.residence.id; // Récupération de l'ID
-                console.log('ID de la résidence:', residenceId);
-                return residenceId;
-            } catch (error) { console.error('Erreur:', error) };
-        }
-        function ajouterElement(event) {
-            event.preventDefault();
-            const prenom = document.getElementById("prenom").value;
-            const nom = document.getElementById("nom").value;
-            const mail = document.getElementById("email").value;
-            const mdp = document.getElementById("password").value;
-            const genre = document.querySelector('input[id="genre"]:checked').value;
-            const age = document.getElementById("age").value;
-            const ville = document.getElementById("ville").value;
-            const departement = document.getElementById("departement").value;
-            const rue = document.getElementById("rue").value;
-            const numrue = document.getElementById("numrue").value;
-            const adressephoto=mail+".png";
-            const idVille = recupidVille(ville, departement);
-            CreaVille()
-            /*if (idVille >= 0) {
-                const idResidence = recupidResidence(idVille, rue, numrue);
-                if (idResidence >= 0) {
-                    const formData = new FormData;
-                    formData.append("mail", mail);
-                    formData.append("mdp", mdp);
-                    formData.append("prenom", prenom);
-                    formData.append("nom", nom);
-                    formData.append("genre", genre);
-                    formData.append("age", age);
-                    formData.append("adressephoto",)
-                    formData.append("idResidence", idResidence);
-                };
-                fetch('http://localhost:5000/Creer_Resident', {
-                    method: 'POST',
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(formData)
-                })
-                    .then(response => response.text())
-                    .then(data => alert(data))
-                    .catch(error => console.error('Erreur:', error));
-            }*/
-            /*
-            à rajouter la création d'un dossier où l'on met les photos
-            */
-        }
-
-
-        /*const mysql = require("mysql2");
-        const connection = mysql.createConnection({
-            host: 'localhost',
-            user: 'root',
-            password: 'cytech0001',
-            database: 'connectees'
+        document.getElementById('formInscription').addEventListener('submit', function (event) {
+            event.preventDefault();  // Empêche la soumission du formulaire classique
+            console.log("Le formulaire est soumis");
+            ajouterElement(event);
         });
-        connection.connect(err => {
-            if (err) {
-                console.log('erreur de connexion : ', err);
+    });
+
+    async function recupidVille(nom, departement) {
+        try {
+            const response = await fetch(`http://localhost:5000/Recherche_Ville_nom_departement?nom=${encodeURIComponent(nom)}&departement=${encodeURIComponent(departement)}`);
+            const data = await response.json();
+
+            if (data.length === 0) {
+                console.log('Aucune ville trouvée.');
+                return -1;
+            }
+
+            const villeId = data[0].id; // Récupération du premier ID
+            console.log('ID de la ville :', villeId);
+            return villeId;
+        } catch (error) {
+            console.error('Erreur:', error);
+            return -1;
+        }
+    }
+
+    async function recupidResidence(idVille, rue, numrue) {
+        try {
+            const response = await fetch(`http://localhost:5000/Recherche_Residence_ville_num_rue?num=${numrue}&idv=${idVille}&rue=${encodeURIComponent(rue)}`);
+            const data = await response.json();
+
+            if (data.length === 0) {
+                console.log('Aucune résidence trouvée.');
+                return -1;
+            }
+
+            const residenceId = data[0].id; // Récupération du premier ID
+            console.log('ID de la résidence:', residenceId);
+            return residenceId;
+        } catch (error) {
+            console.error('Erreur:', error);
+            return -1;
+        }
+    }
+
+    async function ajouterElement(event) {
+        event.preventDefault();
+        console.log("Début de la fonction ajouterElement");
+
+        const prenom = document.getElementById("prenom").value;
+        const nom = document.getElementById("nom").value;
+        const mail = document.getElementById("email").value;
+        const mdp = document.getElementById("password").value;
+        const genre = document.querySelector('input[name="genre"]:checked').value;
+        const age = document.getElementById("age").value;
+        const ville = document.getElementById("ville").value;
+        const departement = document.getElementById("departement").value;
+        const rue = document.getElementById("rue").value;
+        const numrue = document.getElementById("numrue").value;
+        const adressephoto = mail + ".png";
+
+        try {
+            const idVille = await recupidVille(ville, departement);
+            if (idVille < 0) {
+                alert("Ville non trouvée");
                 return;
             }
-            console.log('connecté à la base de données MySQL');
-        });
-        module.exports = connection;
-        app.listen(port, () => {
-            function mail() {
-                var test = document.getElementById('email') // à terminer car oskour
-                alert(test.value)
-                if (test) {
-                    // Importer la bibliothèque Nodemailer
-                    const nodemailer = require('nodemailer');
 
-                    // Créer un objet transporteur
-                    const transporter = nodemailer.createTransport({
-                        host: 'gmail',
-                        port: 587,
-                        secure: false, // utiliser SSL
-                        auth: {
-                            user: 'projetcy395@gmail.com',
-                            pass: 'Groupeinfo$2004',
-                        }
-                    });
+            const idResidence = await recupidResidence(idVille, rue, numrue);
+            if (idResidence < 0) {
+                alert("Adresse non trouvée");
+                return;
+            }
 
-                    // Configurer l'objet mailOptions
-                    const mailOptions = {
-                        from: 'projetcy395@gmail.com',
-                        to: test.value,
-                        subject: 'vérification de compte',
-                        text: "Votre compte est vérifié"
-                    };
+            const residentData = {
+                prenom: prenom,
+                nom: nom,
+                mail: mail,
+                mdp: mdp,
+                age: age,
+                abonnement: "gratuit", // Valeur par défaut
+                idResidence: idResidence,
+                adressephoto: adressephoto,
+                genre: genre
+            };
 
-                    // Envoyer l'email
-                    transporter.sendMail(mailOptions, function (error, info) {
-                        if (error) {
-                            console.log('Erreur:', error);
-                            console.error(error.stack);
-                        } else {
-                            console.log('Email envoyé:', info.response);
-                        }
-                    });
-                }
+            console.log("Données à envoyer:", residentData);
 
-            }*/
-        function Accueil() {
-            window.location.href = "../page_connexion.php";
+            const response = await fetch('http://localhost:5000/Creer_Resident', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(residentData)
+            });
+
+            const result = await response.text();
+            console.log("Réponse du serveur:", result);
+            alert(result);
+
+            // Gérer l'upload de la photo si nécessaire
+            const fileInput = document.getElementById("id1");
+            if (fileInput.files.length > 0) {
+                // Code pour uploader la photo
+            }
+        } catch (error) {
+            console.error('Erreur:', error);
+            alert("Une erreur est survenue lors de l'inscription");
         }
-        function Connect() {
-            window.location.href = "connexion.php";
-        }
-        //})
+    }
 
-    </script>
+    function Connect() {
+        window.location.href = "connexion.php";
+    }
+</script>
 </body>
 
 </html>
