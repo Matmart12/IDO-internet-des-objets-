@@ -393,6 +393,19 @@ app.get('/Recherche_Service_nom', (req, res) => {
     })
 });
 
+app.get('/Recherche_Maire', (req, res) => {
+    const { idVille } = req.query
+    pool.query('SELECT * FROM Resident r, Residence re WHERE r.abonnement= "Maire" AND idResidence=re.id AND re.idVille=?', [idVille], (err, results) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('erreur serveur');
+        }
+        else {
+            res.json(results);
+        }
+    })
+});
+
 app.get('/Recherche_Service_Lien_', (req, res) => {
     const { nomCate } = req.query
     pool.query('SELECT * FROM Service s, Lien l WHERE s.id= l.idService AND l.nomCategorie=?', [nomCate], (err, results) => {
