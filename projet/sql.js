@@ -37,10 +37,7 @@ app.get('/favicon.ico', (req, res) => {
 // Routes API
 app.use('/api/auth', routes);
 
-// Route pour la page d'inscription
-app.get('/inscription', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'inscription.html'));
-});
+
 
 // ... le reste de votre configuration existante
 app.use(session({
