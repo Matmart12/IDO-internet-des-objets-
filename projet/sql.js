@@ -198,16 +198,14 @@ app.get('/deconnexion', (req, res) => {    //se déconnecter
 
 
 const nodemailer = require('nodemailer');
-Require('dotenv').config();
-pass: process.env.MDP_APP_GMAIL
 // Configuration du mail automatique
-Require('dotenv').config();//récup le mdp d'application de .env
+require('dotenv').config();//récup le mdp d'application de .env
 const transporter = nodemailer.createTransport({
     service: 'gmail', // possible d'utiliser un autre service SMTP
     auth: {
         user: 'projetcy395@gmail.com', // l'email à utiliser
 
-        pass: process.env.MDP_APP_GMAIL, // "Mot de passe d'application"
+        pass: process.env.MDP_APP_GMAIL, // "Mot de passe d'application qui se trouve dans .env"
     },
 });
 
