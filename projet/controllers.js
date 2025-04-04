@@ -1,4 +1,4 @@
-const pool = require('../config/db'); // Supposons que vous ayez un fichier de configuration DB
+const pool = require('./sql'); // Supposons que vous ayez un fichier de configuration DB
 
 exports.login = async (req, res) => {
     try {

@@ -3,7 +3,9 @@ const mysql = require('mysql2');
 const app = express();
 const port = 5000;
 const session = require('express-session');
-
+const routes = require('./routes');
+const fs = require('fs');
+const path = require('path');
 app.use(session({
     secret: 'maclesecrete', // Changez ceci par une chaîne complexe
     resave: false,
@@ -13,7 +15,7 @@ app.use(session({
 
 app.use(express.json());
 
-app.use('/api/auth', authRoutes);
+app.use('/api/auth',routes);
 
 // Créer le pool de connexions
 const pool = mysql.createPool({
@@ -72,6 +74,7 @@ const createTables = async () => {
                 mail CHAR(50),
                 mdp CHAR(20),
                 age INT,
+                genre CHAR(40),
                 abonnement CHAR(20),
                 idResidence INT,
                 adressephoto CHAR(50),
@@ -116,16 +119,59 @@ const createTables = async () => {
     }
 };
 
+const uploadsDir = './uploads';
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir);
+}
+
+app.post('/photo', (req, res) => {
+  if (!req.headers['content-type'].startsWith('multipart/form-data')) {
+    return res.status(400).send('Format non supporté');
+  }
+
+  let body = [];
+  req.on('data', chunk => body.push(chunk));
+  req.on('end', () => {
+    const data = Buffer.concat(body);
+    
+    // Extraction basique de l'image (pour une vraie app, utilisez multer)
+    const match = data.toString('binary').match(/\r\n\r\n(.*)\r\n--/s);
+    if (!match) return res.status(400).send('Image non valide');
+    
+    const imageData = Buffer.from(match[1], 'binary');
+    const filename = `image_${Date.now()}.jpg`;
+    const filepath = path.join(uploadsDir, filename);
+
+    fs.writeFile(filepath, imageData, (err) => {
+      if (err) return res.status(500).send('Erreur de sauvegarde');
+      res.send(`Fichier ${filename} sauvegardé`);
+    });
+  });
+});
+
 
 app.post('/Creer_Ville', (req, res) => {
     const { nom, département } = req.body;
-    pool.query('INSERT INTO Ville (nom, département) VALUES(?,?)', [nom, département], (err, result) => {
+    pool.query('INSERT INTO Ville (nom, pays, département) VALUES(?,?,?)', [nom, "France",département], (err, result) => {
         if (err) {
             console.error(err);
             res.status(500).send('erreur serveur');
         }
         else {
             res.send('Ville ajouté avec succès!')
+        }
+    })
+});
+
+app.post('/Creer_Resident', (req, res) => {
+    const {  prenom, nom, mail, mdp, age, idResidence, abo, adressephoto, genre } = req.body;
+    pool.query('INSERT INTO Resident (prenom, nom, mail,genre, mdp, adressephoto, age, abonnement, idResidence) VALUES(?,?,?,?,?,?,?,?,?)', [prenom, nom, mail,genre, mdp, adressephoto, age, abo|| 'visiteur', idResidence ], (err, result) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('erreur serveur');
+        }
+        else {
+            res.send('Résident ajouté avec succès!')
         }
     })
 });

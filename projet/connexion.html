@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/inscription.css">
-    <title>Formulaire d'inscription</title>
+    <title>Connexion</title>
 </head>
 
 <body>
@@ -13,26 +13,32 @@
 
     <legend>
         <form id="formConnexion">
-            <h1>Formulaire d'inscription</h1>
-            <p>Les champs marqués d'une étoiles sont obligatoires (la photo ne l'est pas)</p>
+            <h1>Connexion</h1>
             <table>
                 <tr>
                     <td colspan="2"><input id="email" placeholder="email*" type="email" name="email" required></td>
                 </tr>
                 <tr>
                     <td colspan="2"><input id="password" placeholder="password*" type="password" name="password"
-                            required></button></td>
+                            required></td>
+                </tr>
+                <tr>
+                    <td><button id="Inscription" type="button" onclick="Connect()">S'inscrire'</button></td>
+                    <td><button id="Connecxion" type="submit">se connecter</button></td>
                 </tr>
             </table>
     </legend>
     </form>
 
     <script scr="connexion.js">
+        const routes = require('./routes');
+        app.use('/api/auth',routes);
+        
         console.log("Script chargé !");
-        document.getElementById('formInscription').addEventListener('submit', function (event) {
+        document.getElementById('formConnexion').addEventListener('submit', function (event) {
             event.preventDefault();  // Empêche la soumission du formulaire classique
             console.log("Le formulaire est soumis");
-            ajouterElement(event);
+            testeconnexion(event);
         });
 
 
@@ -43,7 +49,7 @@
                 const data = await response.json();
 
                 if (data.length === 0) {
-                    console.log('Aucune résidence trouvée.');
+                    console.log('Aucun résidenttrouvée.');
                     return -1;
                 }
                 return data[0];
@@ -53,19 +59,18 @@
             }
         }
 
-        async function ajouterElement(event) {
+        async function testeconnexion(event) {
             event.preventDefault();
-            console.log("Début de la fonction ajouterElement");
             const mail = document.getElementById("email").value;
             const mdp = document.getElementById("password").value;
 
             const Resident = await recupMDPResident(mail);
             if (Resident.id === mdp) {
-                
+                window.location.href
             }
         }
         function Connect() {
-            window.location.href = "connexion.php";
+            window.location.href = "inscription.html";
         }
     </script>
 </body>
