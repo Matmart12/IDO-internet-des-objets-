@@ -7,3 +7,10 @@ const authMiddleware = require('./middleware');
 router.post('/connexion', authController.login);
 router.get('/profil', authMiddleware, authController.getProfile);
 module.exports = router;
+
+router.get('/profil', authMiddleware, (req, res) => {   //vérifier connexion
+    res.json({ 
+        user: req.session.user,
+        message: "Vous êtes connecté"
+    });
+});

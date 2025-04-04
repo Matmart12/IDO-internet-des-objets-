@@ -149,7 +149,7 @@ const createTables = async () => {
     }
 };
 
-const uploadsDir = './uploads';
+const uploadsDir = './photo';
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir);
 }
@@ -179,6 +179,31 @@ app.post('/photo', (req, res) => {
   });
 });
 
+app.get('/api/auth/deconnexion', (req, res) => {    //se déconnecter
+    req.session.destroy(err => {
+        if (err) {
+            return res.status(500).send('Erreur lors de la déconnexion');
+        }
+        res.send('Déconnecté avec succès');
+    });
+});
+
+app.post('/api/auth/connexion', async (req, res) => {
+    try {
+        const { mail, mdp } = req.body;
+        const [user] = await pool.query('SELECT id FROM Resident WHERE mail = ? AND mdp = ?', [mail, mdp]);
+        
+        if (user) {
+            req.session.userId = user.id;
+            res.json({ success: true, userId: user.id });
+        } else {
+            res.status(401).json({ success: false, error: "Identifiants incorrects" });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, error: "Erreur serveur" });
+    }
+});
 
 app.post('/Creer_Ville', (req, res) => {
     const { nom, département } = req.body;
