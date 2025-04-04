@@ -170,7 +170,7 @@ async function ajouterElement(event) {
             mail: mail,
             mdp: mdp,
             age: age,
-            abo: "gratuit", // Utilisation d'abo pour la route au lieu d'abonné (plus court à écrire)
+            abo: "nonVerif", // Utilisation d'abo pour la route au lieu d'abonné (plus court à écrire)
             idResidence: idResidence,
             adressephoto: adressephoto,
             genre: genre

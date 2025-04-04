@@ -25,6 +25,16 @@
                             required></button></td>
                 </tr>
                 <tr>
+                    <td colspan="2">Abonnement :
+                        <input type="radio" id="abo" name="abonnement" value="Simple" class="pointer" required><span
+                            class="pointer" onclick="Checked('Homme')">Simple</span>
+                        <input type="radio" id="abo" name="abonnement" value="Maire" class="pointer" required><span
+                            class="pointer" onclick="Checked('Femme')">Maire</span>
+                        <input type="radio" id="abo" name="abonnement" value="Admin" class="pointer" required><span
+                            class="pointer" onclick="Checked('Autre')">Admin</span>
+                    </td>
+                </tr>
+                <tr>
                     <td><button id="connexion" type="button" onclick="Connect()">Se connecter ?</button></td>
                     <td><button id="vérif" type="submit">Vérifier</button></td>
                 </tr>

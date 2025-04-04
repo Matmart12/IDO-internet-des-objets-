@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             const mdp = document.getElementById("password").value;
 
             const Resident = await recupMDPResident(mail);
-            if (Resident.mdp == mdp) {
+            if (Resident.mdp == mdp && Resident.abonnement!="nonVerif") {
                 req.session.user.id=Resident.id;
                 req.session.user.mail=Resident.mail
                 window.location.href = "accueuil.html"
