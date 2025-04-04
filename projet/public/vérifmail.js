@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-async function abonnement(id, abo){
+async function abonnement(id, abo) {
     try {
         const response = await fetch(`http://localhost:5000/modif_Resident_abonnement/${id}`, {
             method: 'PUT',
@@ -21,14 +21,14 @@ async function abonnement(id, abo){
         });
         const result = await response.text();
         console.log(result);
-        window.location.href="connexion.html"
+        window.location.href = "connexion.html"
     } catch (error) {
         console.error('Erreur:', error);
     }
 }
 
 
-async function rechercheMaire(idVille){
+async function rechercheMaire(idVille) {
     try {
         const response = await fetch(`http://localhost:5000/Recherche_Maire?idVille=${encodeURI(idVille)}`);
         const data = await response.json();
@@ -45,17 +45,17 @@ async function rechercheMaire(idVille){
     }
 }
 
-async function rechercheVille(idVille){
+async function rechercheVille(idVille) {
     try {
         const response = await fetch(`http://localhost:5000/Recherche_Maire?idVille=${encodeURI(idVille)}`);
         const data = await response.json();
 
         if (data.length === 0) {
             console.log('Aucune ville trouvée.');
-            return data[0].idVille;
+            return -1;
         }
 
-        return data.id;
+        return data[0].idVille;
     } catch (error) {
         console.error('Erreur:', error);
         return -2;
@@ -68,47 +68,60 @@ async function ajouterElement(event) {
     const mail = document.getElementById("email").value;
     const mdp = document.getElementById("password").value;
     const abo = document.querySelector('input[name="abonnement"]:checked').value;
+
     if (!mail || !mdp || !abo) {
         alert('Veuillez remplir tous les champs obligatoires');
         return;
     }
 
     try {
-        // Vérif du mail
+        // Vérification du mail/mot de passe
         const response = await fetch(`http://localhost:5000/Recherche_Resident_mail?mail=${encodeURIComponent(mail)}`);
         const data = await response.json();
 
-        if (data.length > 0 && data[0].mdp == mdp) {
-            if (abo != "Maire") {
-                abonnement(data[0].id, abo)
-            }
-            else{
-                const idVille= await rechercheVille(data[0].idResidence);
-                const Maire= await rechercheMaire(idVille);
-                try {
-                    // Vérif du mail
-                    const res = await fetch(`http://localhost:5000/Recherche_Resident_id?id=${encodeURIComponent(Maire.id)}`);
-                    const donnee = await res.json();
-                    if(donnee[0].abo!="Maire"){
-                        abonnement(data[0].id, abo);
-                    }
-                    else{
-                        alert("Il existe déjà un maire pour cette ville")
-                    }
-
-                } catch (err) {
-                    console.error("Erreur:", err)
-                }
-            }
-        }
-        else {
+        if (data.length === 0 || data[0].mdp !== mdp) {
             alert("Mail ou mot de passe incorrect");
+            return;
+        }
+
+        const resident = data[0];
+
+        // Cas général (abonnement non-Maire)
+        if (abo !== "Maire") {
+            await abonnement(resident.id, abo);
+            return;
+        }
+
+        // Cas Maire : vérification de la ville et du maire existant
+        const idVille = await rechercheVille(resident.idResidence);
+        if (idVille <= 0) {
+            alert("Erreur lors de la recherche de la ville");
+            return;
+        }
+
+        const maireData = await rechercheMaire(idVille);
+        if (!Array.isArray(maireData) || maireData.length === 0) {
+            await abonnement(resident.id, abo); // Aucun maire trouvé
+            return;
+        }
+
+        // Vérification du maire existant
+        const res = await fetch(`http://localhost:5000/Recherche_Resident_id?id=${encodeURIComponent(maireData[0].id)}`);
+        const donnee = await res.json();
+
+        if (donnee.length > 0 && donnee[0].abo === "Maire") {
+            alert("Il existe déjà un maire pour cette ville");
+        } else {
+            await abonnement(resident.id, abo);
         }
 
     } catch (err) {
-        console.error("Erreur:", err)
+        console.error("Erreur:", err);
+        alert("Une erreur est survenue lors du traitement");
     }
 }
+
+
 function Connect() {
     window.location.href = "connexion.html";
 }
