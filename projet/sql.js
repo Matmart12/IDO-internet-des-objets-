@@ -375,18 +375,6 @@ app.get('/Recherche_Service_id', (req, res) => {
     })
 });
 
-app.get('/Recherche_Resident_id', (req, res) => {
-    const { id } = req.query 
-        pool.query('SELECT * FROM Resident WHERE id=?', [id], (err, results) => {
-        if (err) {
-            console.error(err);
-            res.status(500).send('erreur serveur');
-        }
-        else {
-            res.json(results);
-        }
-    })
-});
 
 app.get('/Recherche_Actu_temps', (req, res) => {
     const {} = req.query
