@@ -39,12 +39,12 @@
         });
 
         app.get('/ma-route', (req, res) => {
-            if (!req.session.user) {
+            if (!req.session.user) { //verif si connecté
                 return res.status(401).send('Non connecté');
             }
 
             console.log("Utilisateur connecté:", req.session.user.id);
-            req.session.user=null;
+            req.session.user=null; //se déconnecte
         });
 
         async function recupMDPResident(mail) {
