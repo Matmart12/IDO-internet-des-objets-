@@ -86,13 +86,13 @@ async function ajouterElement(event) {
 
         const resident = data[0];
 
-        // Cas général (abonnement non-Maire)
+        // Cas général 
         if (abo !== "Maire") {
             await abonnement(resident.id, abo);
             return;
         }
 
-        // Cas Maire : vérification de la ville et du maire existant
+        // Cas Maire : vérification de la ville 
         const idVille = await rechercheVille(resident.idResidence);
         if (idVille <= 0) {
             alert("Erreur lors de la recherche de la ville");
@@ -105,13 +105,16 @@ async function ajouterElement(event) {
             return;
         }
 
-        // Vérification du maire existant
+        // Cas Maire : Vérification du maire existant
         const res = await fetch(`http://localhost:5000/Recherche_Resident_id?id=${encodeURIComponent(maireData[0].id)}`);
         const donnee = await res.json();
 
         if (donnee.length > 0 && donnee[0].abo === "Maire") {
             alert("Il existe déjà un maire pour cette ville");
-        } else {
+        }
+
+        // Cas Maire: abonnement Maire s'il n'y en a pas
+        else {
             await abonnement(resident.id, abo);
         }
 
