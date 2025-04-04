@@ -1,13 +1,13 @@
 document.addEventListener('DOMContentLoaded', async function() {
     try {
-        const response = await fetch('http://localhost:5000/api/auth/check-session', {  //vérifie si l'utilisateur est co
+        const response = await fetch('http://localhost:5000/check-session', {  //vérifie si l'utilisateur est co
             credentials: 'include' // Inclure les cookies 
         });
         const data = await response.json();
 
         if (data.isLoggedIn) {
             // Déconnecte l'utilisateur s'il est déjà co
-            await fetch('http://localhost:5000/api/auth/deconnexion', {
+            await fetch('http://localhost:5000/deconnexion', {
                 method: 'GET',
                 credentials: 'include'
             });

@@ -151,35 +151,35 @@ const createTables = async () => {
 
 const uploadsDir = './photo';
 if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir);
+    fs.mkdirSync(uploadsDir);
 }
 
 app.post('/photo', (req, res) => {
-  if (!req.headers['content-type'].startsWith('multipart/form-data')) {
-    return res.status(400).send('Format non supporté');
-  }
+    if (!req.headers['content-type'].startsWith('multipart/form-data')) {
+        return res.status(400).send('Format non supporté');
+    }
 
-  let body = [];
-  req.on('data', chunk => body.push(chunk));
-  req.on('end', () => {
-    const data = Buffer.concat(body);
-    
-    // Extraction basique de l'image (pour une vraie app, utilisez multer)
-    const match = data.toString('binary').match(/\r\n\r\n(.*)\r\n--/s);
-    if (!match) return res.status(400).send('Image non valide');
-    
-    const imageData = Buffer.from(match[1], 'binary');
-    const filename = `image_${Date.now()}.jpg`;
-    const filepath = path.join(uploadsDir, filename);
+    let body = [];
+    req.on('data', chunk => body.push(chunk));
+    req.on('end', () => {
+        const data = Buffer.concat(body);
 
-    fs.writeFile(filepath, imageData, (err) => {
-      if (err) return res.status(500).send('Erreur de sauvegarde');
-      res.send(`Fichier ${filename} sauvegardé`);
+        // Extraction basique de l'image (pour une vraie app, utilisez multer)
+        const match = data.toString('binary').match(/\r\n\r\n(.*)\r\n--/s);
+        if (!match) return res.status(400).send('Image non valide');
+
+        const imageData = Buffer.from(match[1], 'binary');
+        const filename = `image_${Date.now()}.jpg`;
+        const filepath = path.join(uploadsDir, filename);
+
+        fs.writeFile(filepath, imageData, (err) => {
+            if (err) return res.status(500).send('Erreur de sauvegarde');
+            res.send(`Fichier ${filename} sauvegardé`);
+        });
     });
-  });
 });
 
-app.get('/api/auth/check-session', (req, res) => { //savoir si l'utilisateur est connecté
+app.get('/check-session', (req, res) => { //savoir si l'utilisateur est connecté
     if (req.session.userId) {
         res.json({ isLoggedIn: true });
     } else {
@@ -187,7 +187,7 @@ app.get('/api/auth/check-session', (req, res) => { //savoir si l'utilisateur est
     }
 });
 
-app.get('/api/auth/deconnexion', (req, res) => {    //se déconnecter
+app.get('/deconnexion', (req, res) => {    //se déconnecter
     req.session.destroy(err => {
         if (err) {
             return res.status(500).send('Erreur lors de la déconnexion');
@@ -196,11 +196,49 @@ app.get('/api/auth/deconnexion', (req, res) => {    //se déconnecter
     });
 });
 
+
+const nodemailer = require('nodemailer');
+Require('dotenv').config();
+pass: process.env.MDP_APP_GMAIL
+// Configuration du mail automatique
+Require('dotenv').config();//récup le mdp d'application de .env
+const transporter = nodemailer.createTransport({
+    service: 'gmail', // possible d'utiliser un autre service SMTP
+    auth: {
+        user: 'projetcy395@gmail.com', // l'email à utiliser
+
+        pass: process.env.MDP_APP_GMAIL, // "Mot de passe d'application"
+    },
+});
+
+// Route pour envoyer un email
+app.post('/send-email', (req, res) => {
+    const { to, subject, html } = req.body;
+
+    const mailOptions = {
+        from: 'projectcy395@gmail.com',
+        to,
+        subject,
+        html: html,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error('Erreur:', error);
+            res.status(500).send('Erreur lors de l\'envoi de l\'email');
+        } else {
+            console.log('Email envoyé:', info.response);
+            res.send('Email envoyé avec succès');
+        }
+    });
+});
+
+
 app.post('/api/auth/connexion', async (req, res) => {
     try {
         const { mail, mdp } = req.body;
         const [user] = await pool.query('SELECT id FROM Resident WHERE mail = ? AND mdp = ?', [mail, mdp]);
-        
+
         if (user) {
             req.session.userId = user.id;
             res.json({ success: true, userId: user.id });
@@ -215,7 +253,7 @@ app.post('/api/auth/connexion', async (req, res) => {
 
 app.post('/Creer_Ville', (req, res) => {
     const { nom, département } = req.body;
-    pool.query('INSERT INTO Ville (nom, pays, département) VALUES(?,?,?)', [nom, "France",département], (err, result) => {
+    pool.query('INSERT INTO Ville (nom, pays, département) VALUES(?,?,?)', [nom, "France", département], (err, result) => {
         if (err) {
             console.error(err);
             res.status(500).send('erreur serveur');
@@ -227,8 +265,8 @@ app.post('/Creer_Ville', (req, res) => {
 });
 
 app.post('/Creer_Resident', (req, res) => {
-    const {  prenom, nom, mail, mdp, age, idResidence, abo, adressephoto, genre } = req.body;
-    pool.query('INSERT INTO Resident (prenom, nom, mail,genre, mdp, adressephoto, age, abonnement, idResidence) VALUES(?,?,?,?,?,?,?,?,?)', [prenom, nom, mail,genre, mdp, adressephoto, age, abo|| 'visiteur', idResidence ], (err, result) => {
+    const { prenom, nom, mail, mdp, age, idResidence, abo, adressephoto, genre } = req.body;
+    pool.query('INSERT INTO Resident (prenom, nom, mail,genre, mdp, adressephoto, age, abonnement, idResidence) VALUES(?,?,?,?,?,?,?,?,?)', [prenom, nom, mail, genre, mdp, adressephoto, age, abo || 'visiteur', idResidence], (err, result) => {
         if (err) {
             console.error(err);
             res.status(500).send('erreur serveur');
@@ -385,8 +423,8 @@ app.get('/Recherche_Service_id', (req, res) => {
 
 
 app.get('/Recherche_Actu_temps', (req, res) => {
-    const {} = req.query
-    pool.query('SELECT a.* FROM Actu a ORDER BY a.apparition DESC LIMIT 5',(err, results) => {
+    const { } = req.query
+    pool.query('SELECT a.* FROM Actu a ORDER BY a.apparition DESC LIMIT 5', (err, results) => {
         if (err) {
             console.error(err);
             res.status(500).send('erreur serveur');
@@ -398,8 +436,8 @@ app.get('/Recherche_Actu_temps', (req, res) => {
 });
 
 app.get('/Recherche_Actu_Ville_temps', (req, res) => {
-    const {idv} = req.query
-    pool.query('SELECT nom FROM Actu  WHERE	idVille=? ORDER BY a.apparition DESC LIMIT 5;',[idv], (err, results) => {
+    const { idv } = req.query
+    pool.query('SELECT nom FROM Actu  WHERE	idVille=? ORDER BY a.apparition DESC LIMIT 5;', [idv], (err, results) => {
         if (err) {
             console.error(err);
             res.status(500).send('erreur serveur');
@@ -411,8 +449,8 @@ app.get('/Recherche_Actu_Ville_temps', (req, res) => {
 });
 
 app.get('/Recherche_Residence_ville_num_rue', (req, res) => {
-    const {num, rue, idv} = req.query
-    pool.query('SELECT * FROM Residence  WHERE numero=? AND rue=? AND idVille=? ',[num,rue,idv], (err, results) => {
+    const { num, rue, idv } = req.query
+    pool.query('SELECT * FROM Residence  WHERE numero=? AND rue=? AND idVille=? ', [num, rue, idv], (err, results) => {
         if (err) {
             console.error(err);
             res.status(500).send('erreur serveur');
@@ -480,7 +518,7 @@ app.delete('/sup_Actu_id/:id', (req, res) => {
 
 app.delete('/sup_Lien/:idService:nomCate', (req, res) => {
     const { idService, nomCate } = req.params;
-    pool.query('DELETE FROM Lien WHERE idService=? AND nomCategorie = ?', [idService,nomCate], (err, result) => {
+    pool.query('DELETE FROM Lien WHERE idService=? AND nomCategorie = ?', [idService, nomCate], (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).send('Erreur serveur');
@@ -500,12 +538,12 @@ app.delete('/sup_Actu_nom/:nom', (req, res) => {
     });
 });
 
- app.put('/modif_Resident_genre', (req, res) => {
+app.put('/modif_Resident_genre', (req, res) => {
     const { id } = req.params;
-    const { genre} = req.body; 
+    const { genre } = req.body;
 
-    pool.query('UPDATE Resident SET genre = ? WHERE id = ?', 
-        [genre, id], 
+    pool.query('UPDATE Resident SET genre = ? WHERE id = ?',
+        [genre, id],
         (err, result) => {
             if (err) {
                 console.error(err);
@@ -518,10 +556,10 @@ app.delete('/sup_Actu_nom/:nom', (req, res) => {
 
 app.put('/modif_Resident_nom', (req, res) => {
     const { id } = req.params;
-    const { nom } = req.body; 
+    const { nom } = req.body;
 
-    pool.query('UPDATE Resident SET nom = ? WHERE id = ?', 
-        [nom, id], 
+    pool.query('UPDATE Resident SET nom = ? WHERE id = ?',
+        [nom, id],
         (err, result) => {
             if (err) {
                 console.error(err);
@@ -534,10 +572,10 @@ app.put('/modif_Resident_nom', (req, res) => {
 
 app.put('/modif_Resident_prenom', (req, res) => {
     const { id } = req.params;
-    const { prenom} = req.body; // Remplacez par vos champs
+    const { prenom } = req.body; // Remplacez par vos champs
 
-    pool.query('UPDATE Resident SET prenom = ? WHERE id = ?', 
-        [prenom, id], 
+    pool.query('UPDATE Resident SET prenom = ? WHERE id = ?',
+        [prenom, id],
         (err, result) => {
             if (err) {
                 console.error(err);
@@ -552,8 +590,8 @@ app.put('/modif_Resident_mail', (req, res) => {
     const { id } = req.params;
     const { mail } = req.body; // Remplacez par vos champs
 
-    pool.query('UPDATE Resident SET mail = ? WHERE id = ?', 
-        [mail, id], 
+    pool.query('UPDATE Resident SET mail = ? WHERE id = ?',
+        [mail, id],
         (err, result) => {
             if (err) {
                 console.error(err);
@@ -568,8 +606,8 @@ app.put('/modif_Resident_mdp', (req, res) => {
     const { id } = req.params;
     const { mdp } = req.body; // Remplacez par vos champs
 
-    pool.query('UPDATE Resident SET mdp = ? WHERE id = ?', 
-        [mdp, id], 
+    pool.query('UPDATE Resident SET mdp = ? WHERE id = ?',
+        [mdp, id],
         (err, result) => {
             if (err) {
                 console.error(err);
@@ -584,8 +622,8 @@ app.put('/modif_Resident_abonnement', (req, res) => {
     const { id } = req.params;
     const { abonnement } = req.body; // Remplacez par vos champs
 
-    pool.query('UPDATE Resident SET abonnement = ? WHERE id = ?', 
-        [abonnement, id], 
+    pool.query('UPDATE Resident SET abonnement = ? WHERE id = ?',
+        [abonnement, id],
         (err, result) => {
             if (err) {
                 console.error(err);
@@ -598,10 +636,10 @@ app.put('/modif_Resident_abonnement', (req, res) => {
 
 app.put('/modif_Ville_nom', (req, res) => {
     const { idVille } = req.params;
-    const { nom} = req.body; // Remplacez par vos champs
+    const { nom } = req.body; // Remplacez par vos champs
 
-    pool.query('UPDATE Ville SET nom=? WHERE id = ?', 
-        [nom, idVille ], 
+    pool.query('UPDATE Ville SET nom=? WHERE id = ?',
+        [nom, idVille],
         (err, result) => {
             if (err) {
                 console.error(err);
@@ -614,10 +652,10 @@ app.put('/modif_Ville_nom', (req, res) => {
 
 app.put('/modif_Service_nom', (req, res) => {
     const { id } = req.params;
-    const {nom } = req.body; // Remplacez par vos champs
+    const { nom } = req.body; // Remplacez par vos champs
 
-    pool.query('UPDATE Service SET nom = ? WHERE id = ?', 
-        [nom, id], 
+    pool.query('UPDATE Service SET nom = ? WHERE id = ?',
+        [nom, id],
         (err, result) => {
             if (err) {
                 console.error(err);
@@ -630,10 +668,10 @@ app.put('/modif_Service_nom', (req, res) => {
 
 app.put('/modif_Service_Description', (req, res) => {
     const { id } = req.params;
-    const {descrip } = req.body; // Remplacez par vos champs
+    const { descrip } = req.body; // Remplacez par vos champs
 
-    pool.query('UPDATE Service SET descrip = ? WHERE id = ?', 
-        [descrip, id], 
+    pool.query('UPDATE Service SET descrip = ? WHERE id = ?',
+        [descrip, id],
         (err, result) => {
             if (err) {
                 console.error(err);
@@ -646,10 +684,10 @@ app.put('/modif_Service_Description', (req, res) => {
 
 app.put('/modif_Actu_nom', (req, res) => {
     const { id } = req.params;
-    const {nom } = req.body; // Remplacez par vos champs
+    const { nom } = req.body; // Remplacez par vos champs
 
-    pool.query('UPDATE Actu SET nom = ? WHERE id = ?', 
-        [nom, id], 
+    pool.query('UPDATE Actu SET nom = ? WHERE id = ?',
+        [nom, id],
         (err, result) => {
             if (err) {
                 console.error(err);
@@ -662,10 +700,10 @@ app.put('/modif_Actu_nom', (req, res) => {
 
 app.put('/modif_Actu_Descrip', (req, res) => {
     const { id } = req.params;
-    const {descrip } = req.body; // Remplacez par vos champs
+    const { descrip } = req.body; // Remplacez par vos champs
 
-    pool.query('UPDATE Actu SET descrip = ? WHERE id = ?', 
-        [descrip, id], 
+    pool.query('UPDATE Actu SET descrip = ? WHERE id = ?',
+        [descrip, id],
         (err, result) => {
             if (err) {
                 console.error(err);
