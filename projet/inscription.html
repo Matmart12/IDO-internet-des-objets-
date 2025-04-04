@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/inscription.css">
+    <!-- <link rel="stylesheet" href="../css/inscription.css">-->
     <title>Formulaire d'inscription</title>
 </head>
 
@@ -70,8 +70,6 @@
     </form>
 
     <script scr="inscription.js">
-        const routes = require('./routes');
-        app.use('/api/auth', routes);
 
         console.log("Script chargé !");
         document.addEventListener("DOMContentLoaded", function () {
@@ -80,6 +78,7 @@
             document.getElementById('formInscription').addEventListener('submit', function (event) {
                 event.preventDefault();  // Empêche la soumission du formulaire classique
                 console.log("Le formulaire est soumis");
+                event.preventDefault();
                 ajouterElement(event);
             });
         });
@@ -140,7 +139,6 @@
         }
 
         async function ajouterElement(event) {
-            event.preventDefault();
 
             const prenom = document.getElementById("prenom").value;
             const nom = document.getElementById("nom").value;
@@ -154,7 +152,9 @@
             const numrue = document.getElementById("numrue").value;
             const fileInput = document.getElementById("id1"); // Correction de l'ID
             const adressephoto = "./photo/" + mail.replace(/[@.]/g, '_') + ".png";
-
+            console.log("Valeurs du formulaire:", {
+                prenom, nom, mail, mdp, age, ville, departement, rue, numrue
+            });
             if (!mail || !prenom || !nom || !mdp || !age || !ville || !departement || !rue || !numrue) {
                 alert('Veuillez remplir tous les champs obligatoires');
                 return;

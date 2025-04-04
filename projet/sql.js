@@ -1,7 +1,6 @@
 const express = require('express');
 const mysql = require('mysql2');
 const app = express();
-const port = 5000;
 const session = require('express-session');
 const routes = require('./routes');
 const fs = require('fs');
@@ -624,6 +623,16 @@ app.put('/modif_Actu_Descrip', (req, res) => {
         }
     );
 });
+
+app.use(cors({
+    origin: ['http://localhost:5000', 'http://127.0.0.1:5000', 'http://localhost:3000', 'http://127.0.0.1:3000'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+}));
+
+// Gestion des pré-vols OPTIONS
+app.options('*', cors());
 
 const PORT = 5000;
 app.get('/', (req, res) => {
