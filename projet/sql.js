@@ -179,6 +179,14 @@ app.post('/photo', (req, res) => {
   });
 });
 
+app.get('/api/auth/check-session', (req, res) => { //savoir si l'utilisateur est connecté
+    if (req.session.userId) {
+        res.json({ isLoggedIn: true });
+    } else {
+        res.json({ isLoggedIn: false });
+    }
+});
+
 app.get('/api/auth/deconnexion', (req, res) => {    //se déconnecter
     req.session.destroy(err => {
         if (err) {

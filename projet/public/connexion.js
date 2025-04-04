@@ -1,16 +1,29 @@
+document.addEventListener('DOMContentLoaded', async function() {
+    try {
+        const response = await fetch('http://localhost:5000/api/auth/check-session', {  //vérifie si l'utilisateur est co
+            credentials: 'include' // Inclure les cookies 
+        });
+        const data = await response.json();
+
+        if (data.isLoggedIn) {
+            // Déconnecte l'utilisateur s'il est déjà co
+            await fetch('http://localhost:5000/api/auth/deconnexion', {
+                method: 'GET',
+                credentials: 'include'
+            });
+            console.log('Utilisateur déconnecté automatiquement.');
+        }
+    } catch (error) {
+        console.error('Erreur lors de la vérification de la session:', error);
+    }
+});
+        
+        
+        
         document.getElementById('formConnexion').addEventListener('submit', function (event) {
             event.preventDefault();  // Empêche la soumission du formulaire classique
             console.log("Le formulaire est soumis");
             testeconnexion(event);
-        });
-
-        app.get('/ma-route', (req, res) => {
-            if (!req.session.user) { //verif si connecté
-                return res.status(401).send('Non connecté');
-            }
-
-            console.log("Utilisateur connecté:", req.session.user.id);
-            req.session.user=null; //se déconnecte
         });
 
         async function recupMDPResident(mail) {
