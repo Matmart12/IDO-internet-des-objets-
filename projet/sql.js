@@ -5,16 +5,50 @@ const session = require('express-session');
 const routes = require('./routes');
 const fs = require('fs');
 const path = require('path');
+const cors = require('cors');
+
+// Middlewares de base
+app.use(express.json());
+
+// Configuration CORS (une seule fois, placée tôt)
+app.use(cors({
+    origin: ['http://localhost:5000', 'http://127.0.0.1:5000', 'http://localhost:3000', 'http://127.0.0.1:3000'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+}));
+
+// Configuration de la session (une seule fois)
+app.use(session({
+    secret: 'maclesecrete',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+}));
+
+// Middleware pour les fichiers statiques (une seule fois)
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Route favicon (après static mais avant les autres routes)
+app.get('/favicon.ico', (req, res) => {
+    res.status(204).end();
+});
+
+// Routes API
+app.use('/api/auth', routes);
+
+// Route pour la page d'inscription
+app.get('/inscription', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'inscription.html'));
+});
+
+// ... le reste de votre configuration existante
 app.use(session({
     secret: 'maclesecrete', // Changez ceci par une chaîne complexe
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false } // Mettez `true` si vous utilisez HTTPS
 }));
-
-app.use(express.json());
-
-app.use('/api/auth',routes);
 
 // Créer le pool de connexions
 const pool = mysql.createPool({
