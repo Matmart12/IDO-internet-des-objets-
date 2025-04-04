@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/inscription.css">
     <title>Connexion</title>
+    <link rel="icon" href="data:,"> <!-- bloque la demande de favoricon.ico -->
 </head>
 
 <body>
@@ -31,9 +31,6 @@
     </form>
 
     <script scr="connexion.js">
-        const routes = require('./routes');
-        app.use('/api/auth',routes);
-        
         console.log("Script chargé !");
         document.getElementById('formConnexion').addEventListener('submit', function (event) {
             event.preventDefault();  // Empêche la soumission du formulaire classique
@@ -43,15 +40,16 @@
 
 
 
-        async function recupMDPResident(idVille, rue, numrue) {
+        async function recupMDPResident(mail) {
             try {
                 const response = await fetch(`http://localhost:5000/Recherche_Resident_mail?mail=${mail}`);
                 const data = await response.json();
 
                 if (data.length === 0) {
-                    console.log('Aucun résidenttrouvée.');
+                    console.log('Aucun résident trouvée.');
                     return -1;
                 }
+                console.log("id du résident: ", data[0].id);
                 return data[0];
             } catch (error) {
                 console.error('Erreur:', error);
@@ -65,8 +63,9 @@
             const mdp = document.getElementById("password").value;
 
             const Resident = await recupMDPResident(mail);
-            if (Resident.id === mdp) {
-                window.location.href
+            if (Resident.mdp == mdp) {
+                //à rajouter l'id dans un cookie ou un truc dans le genre
+                window.location.href="accueuil.html"
             }
         }
         function Connect() {
