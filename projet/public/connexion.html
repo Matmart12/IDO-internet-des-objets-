@@ -38,7 +38,14 @@
             testeconnexion(event);
         });
 
+        app.get('/ma-route', (req, res) => {
+            if (!req.session.user) {
+                return res.status(401).send('Non connecté');
+            }
 
+            console.log("Utilisateur connecté:", req.session.user.id);
+            req.session.user=null;
+        });
 
         async function recupMDPResident(mail) {
             try {
@@ -64,8 +71,9 @@
 
             const Resident = await recupMDPResident(mail);
             if (Resident.mdp == mdp) {
-                //à rajouter l'id dans un cookie ou un truc dans le genre
-                window.location.href="accueuil.html"
+                req.session.user.id=Resident.id;
+                req.session.user.mail=Resident.mail
+                window.location.href = "accueuil.html"
             }
         }
         function Connect() {

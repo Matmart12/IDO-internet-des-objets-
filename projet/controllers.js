@@ -6,7 +6,7 @@ exports.login = async (req, res) => {
         const [user] = await pool.query('SELECT id FROM Resident WHERE mail = ? AND mdp = ?', [mail, mdp]);
         
         if (user) {
-            req.session.userId = user.id;
+            req.session.userId = user.id; //(stocker l'info de l'utilisateur)
             res.json({ success: true });
         } else {
             res.status(401).json({ error: "Identifiants incorrects" });
