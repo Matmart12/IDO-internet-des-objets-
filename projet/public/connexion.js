@@ -18,15 +18,13 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 });
         
-        
-        
         document.getElementById('formConnexion').addEventListener('submit', function (event) {
             event.preventDefault();  // Empêche la soumission du formulaire classique
             console.log("Le formulaire est soumis");
             testeconnexion(event);
         });
 
-        async function recupMDPResident(mail) {
+        async function recupResident(mail) {
             try {
                 const response = await fetch(`http://localhost:5000/Recherche_Resident_mail?mail=${mail}`);
                 const data = await response.json();
@@ -48,10 +46,16 @@ document.addEventListener('DOMContentLoaded', async function() {
             const mail = document.getElementById("email").value;
             const mdp = document.getElementById("password").value;
 
-            const Resident = await recupMDPResident(mail);
+            const Resident = await recupResident(mail);
+
+            if (Resident === -1) {
+                alert("Aucun utilisateur trouvé avec cet email");
+                return;
+            }
+
             if (Resident.mdp == mdp && Resident.abonnement!="nonVerif") {
                 try {
-                    const response = await fetch('http://localhost:5000/api/auth/connexion', {
+                    const response = await fetch('http://localhost:5000/testconnexion', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ mail, mdp }),
@@ -60,7 +64,8 @@ document.addEventListener('DOMContentLoaded', async function() {
                     const data = await response.json();
             
                     if (data.success) {
-                        window.location.href = "accueuil.html";
+                        alert("identifiants corrects")
+                        window.location.href = "accueil.html";
                     } else {
                         alert("Identifiants incorrects");
                     }

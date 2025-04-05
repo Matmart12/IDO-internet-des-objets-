@@ -10,6 +10,18 @@ const cors = require('cors');
 // Middlewares de base
 app.use(express.json());
 
+// configuration de la session
+app.use(session({
+    secret: 'maclesecrete',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        secure: false,
+        httpOnly: true,
+        sameSite: 'lax' // Protection contre les attaques CSRF
+    }
+}));
+
 // Configuration CORS (une seule fois, placée tôt)
 app.use(cors({
     origin: ['http://localhost:5000', 'http://127.0.0.1:5000', 'http://localhost:3000', 'http://127.0.0.1:3000'],
@@ -28,20 +40,6 @@ app.get('/favicon.ico', (req, res) => {
 
 // Routes API
 app.use('/api/auth', routes);
-
-
-
-// configuration de la session
-app.use(session({
-    secret: 'maclesecrete',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        secure: false,
-        httpOnly: true,
-        sameSite: 'lax' // Protection contre les attaques CSRF
-    }
-}));
 
 // Créer le pool de connexions
 const pool = mysql.createPool({
@@ -176,25 +174,6 @@ app.post('/photo', (req, res) => {
 });
 
 
-app.post('/connexion', async (req, res) => {
-    try {
-        const { mail, mdp } = req.body;
-        const [user] = await pool.query('SELECT id, mail FROM Resident WHERE mail = ? AND mdp = ?', [mail, mdp]);
-
-        if (user) {
-            req.session.user = {
-                id: user.id,
-                mail: user.mail
-            };
-            res.json({ success: true });
-        } else {
-            res.status(401).json({ error: "Identifiants incorrects" });
-        }
-    } catch (error) {
-        res.status(500).json({ error: "Erreur serveur" });
-    }
-});
-
 // Exemple: route pour récupérer le profil utilisateur
 app.get('/session', (req, res) => {
     if (!req.session.user) {
@@ -203,8 +182,7 @@ app.get('/session', (req, res) => {
 
     // Récupère les données de la session
     const userData = {
-        id: req.session.user.id,
-        mail: req.session.user.mail,
+        id: req.session.userId,
         // Ajoutez d'autres champs si nécessaire (ex: abonnement)
     };
 
@@ -266,21 +244,31 @@ app.post('/send-email', (req, res) => {
 });
 
 
-app.post('/api/auth/connexion', async (req, res) => {
-    try {
-        const { mail, mdp } = req.body;
-        const [user] = await pool.query('SELECT id FROM Resident WHERE mail = ? AND mdp = ?', [mail, mdp]);
 
-        if (user) {
-            req.session.userId = user.id;
-            res.json({ success: true, userId: user.id });
-        } else {
-            res.status(401).json({ success: false, error: "Identifiants incorrects" });
+app.post('/testconnexion', (req, res) => {
+    const { mail, mdp } = req.body;
+
+    pool.query('SELECT id, abonnement FROM Resident WHERE mail = ? AND mdp = ?', [mail, mdp], (err, results) => {
+        if (err) {
+            console.error('Erreur SQL :', err);
+            return res.status(500).json({ success: false, error: "Erreur serveur" });
         }
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, error: "Erreur serveur" });
-    }
+
+        if (results.length > 0 && results[0].abonnement !== "nonVerif") {
+            const user = results[0];
+            req.session.userId = user.id;
+            res.json({
+                success: true,
+                userId: user.id,
+                abonnement: user.abonnement
+            });
+        } else {
+            res.status(401).json({ 
+                success: false, 
+                error: results.length > 0 ? "Compte non vérifié" : "Identifiants incorrects" 
+            });
+        }
+    });
 });
 
 app.post('/Creer_Ville', (req, res) => {
