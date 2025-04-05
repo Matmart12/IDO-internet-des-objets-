@@ -357,9 +357,22 @@ app.post('/Creer_Lien', (req, res) => {
     })
 });
 
+app.post('/Creer_LienActu', (req, res) => {
+    const { idActu, nomCate } = req.body;
+    pool.query('INSERT INTO LienActu (idActu, nomCategorie) VALUES(?,?)', [idActu, nomCate], (err, result) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('erreur serveur');
+        }
+        else {
+            res.send('Ville ajouté avec succès!')
+        }
+    })
+});
+
 app.post('/Creer_Actu', (req, res) => {
     const { nom, description, apparition, idVille } = req.body;
-    pool.query('INSERT INTO Actu (nom, descrip,apparition, idVille) VALUES(?,?)', [nom, description, apparition, idVille], (err, result) => {
+    pool.query('INSERT INTO Actu (nom, descrip,apparition, idVille) VALUES(?,?,?,?)', [nom, description, apparition, idVille], (err, result) => {
         if (err) {
             console.error(err);
             res.status(500).send('erreur serveur');
@@ -439,6 +452,19 @@ app.get('/Recherche_Maire', (req, res) => {
 app.get('/Recherche_Service_Lien_', (req, res) => {
     const { nomCate } = req.query
     pool.query('SELECT * FROM Service s, Lien l WHERE s.id= l.idService AND l.nomCategorie=?', [nomCate], (err, results) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('erreur serveur');
+        }
+        else {
+            res.json(results);
+        }
+    })
+});
+
+app.get('/Recherche_Actu_LienActu_', (req, res) => {
+    const { nomCate } = req.query
+    pool.query('SELECT * FROM Actu a, LienActu l WHERE a.id= l.idActu AND l.nomCategorie=?', [nomCate], (err, results) => {
         if (err) {
             console.error(err);
             res.status(500).send('erreur serveur');
@@ -560,6 +586,17 @@ app.delete('/sup_Actu_id/:id', (req, res) => {
 app.delete('/sup_Lien/:idService:nomCate', (req, res) => {
     const { idService, nomCate } = req.params;
     pool.query('DELETE FROM Lien WHERE idService=? AND nomCategorie = ?', [idService, nomCate], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Erreur serveur');
+        }
+        res.status(200).json({ message: 'Élément supprimé avec succès' });
+    });
+});
+
+app.delete('/sup_LienActu/:idActu:nomCate', (req, res) => {
+    const { idActu, nomCate } = req.params;
+    pool.query('DELETE FROM LienActu WHERE idActu=? AND nomCategorie = ?', [idActu, nomCate], (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).send('Erreur serveur');
