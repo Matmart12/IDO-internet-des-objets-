@@ -764,24 +764,20 @@ app.get('/Recherche_Lieux', (req, res) => {
         }
     });
 });
-app.get('/Recherche_Actu_Ville_temps', (req, res) => {
-    const { idv } = req.query;  // Récupère l'ID de la ville dans la requête
+app.get('/Recherche_Actu_Ville', (req, res) => {
+    const { idVille } = req.query; // Récupère l'ID de la ville passé dans la requête
 
     pool.query(`
-        SELECT 
+        SELECT
             a.id,
             a.nom,
             a.descrip,
-            a.apparition,       -- Date de début
-            a.dateFin,          -- Date de fin (ajoute si c'est nécessaire)
-            a.horaires,
-            a.tarif,
-            a.emplacement,
-            a.reservation
+            a.apparition,
+            a.tarif
         FROM Actu a
-        WHERE a.idVille = ? 
-        ORDER BY a.apparition DESC;  -- Assure-toi que la colonne 'apparition' existe dans Actu
-    `, [idv], (err, results) => {
+        WHERE a.idVille = ?
+        ORDER BY a.apparition DESC;
+    `, [idVille], (err, results) => {
         if (err) {
             console.error(err);
             res.status(500).send('Erreur serveur');
@@ -790,6 +786,9 @@ app.get('/Recherche_Actu_Ville_temps', (req, res) => {
         }
     });
 });
+
+
+
 
 
 app.listen(PORT, async () => {
