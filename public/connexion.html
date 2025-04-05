@@ -1,36 +1,35 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion</title>
+    <title>Page de Connexion</title>
     <link rel="stylesheet" href="connexion.css">
-    <link rel="icon" href="data:,"> <!-- bloque la demande de favoricon.ico -->
 </head>
-
 <body>
-    <div id=divdroit> <img src="https://www.educol.net/coloriage-maison-dl28263.jpg" width="40px" alt=""></a></div>
+      
+    <!-- Header Section -->
+    <div id="topBar">
+        <a href="pageacceuiltest.html" class="logo">TARZONIS</a> <!-- Lien vers la pageacceuiltest.html -->
+    </div>
 
-    <legend>
-        <form id="formConnexion">
-            <h1>Connexion</h1>
-            <table>
-                <tr>
-                    <td colspan="2"><input id="email" placeholder="email*" type="email" name="email" required></td>
-                </tr>
-                <tr>
-                    <td colspan="2"><input id="password" placeholder="mot de passe*" type="password" name="password" required></td>
-                </tr>
-                <tr>
-                    <td><button id="Inscription" type="button" onclick="Connect()">S'inscrire'</button></td>
-                    <td><button id="Connexion" type="submit">se connecter</button></td>
-                </tr>
-            </table>
-    </legend>
-    </form>
+    <!-- Login Form -->
+    <div id="formConnexion">
+        <legend>
+            <h1>Connexion à votre compte</h1>
+        </legend>
+        <form action="#" method="POST">
+            <input type="text" name="username" placeholder="Nom d'utilisateur" required>
+            <input type="password" name="password" placeholder="Mot de passe" required>
+            
+                
+            
+            <button type="submit" id="Connecxion">Se connecter</button>
+        </form>
+        <div>
+            <p>Vous n'avez pas de compte ? <a href="inscription.html">S'inscrire</a></p>
 
-    <script src="connexion.js"></script>
+        </div>
+    </div>
 </body>
-
 </html>

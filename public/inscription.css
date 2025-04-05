@@ -28,7 +28,6 @@ p {
     text-align: center;
 }
 
-
 /* Formulaire */
 form {
     background-color: #fff;
@@ -65,13 +64,13 @@ input[type="submit"], button {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    background-color: black;
+    background-color:  #004aad; /* Same blue as the Connexion page */
     color: white;
     font-size: 16px;
 }
 
 input[type="submit"]:hover, button:hover {
-    background-color: black;
+    background-color: #004aad; /* Darker blue on hover */
 }
 
 /* Champs obligatoires */
@@ -85,20 +84,20 @@ input[required]:focus {
 
 /* Bouton d'inscription */
 #inscription {
-    background-color: red;
+    background-color:  #004aad; /* Same blue as the Connexion page */
 }
 
 #inscription:hover {
-    background-color: red;
+    background-color:  #004aad; /* Darker blue on hover */
 }
 
 /* Alignement du bouton de connexion */
 #connexion {
-    background-color: red;
+    background-color:  #004aad; /
 }
 
 #connexion:hover {
-    background-color: red;
+    background-color:  #004aad; 
 }
 
 /* Mise en page de la section droite avec l'image */
@@ -132,26 +131,35 @@ span.pointer {
 span.pointer:hover {
     text-decoration: underline;
 }
+
+/* Header and Tarzonis Button */
 #header {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    z-index: 1000; /* S'assurer que le bouton soit au-dessus de tout */
+    background-color:  #004aad; /* Same blue as the Connexion page */
+    padding: 10px 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
 }
 
 #header .logo {
-    background-color: #fff;
-    color: #000;
-    padding: 8px 20px;
-    font-weight: bold;
+    color: white;
     font-size: 22px;
+    font-weight: bold;
     text-decoration: none;
-    border-radius: 3px;
-    transition: background-color 0.3s;
-    border: 2px solid #f28b9c;
+    display: inline-block;
 }
 
 #header .logo:hover {
-    background-color: #f28b9c;
+    text-decoration: underline;
+}
+
+#header .logo:active {
+    background-color: #004aad; /* Darker blue on click */
+}
+
+#header .logo a {
     color: white;
+    text-decoration: none;
 }
