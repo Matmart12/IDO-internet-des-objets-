@@ -549,7 +549,7 @@ async function Supp() {
             alert('Votre compte a été supprimé avec succès.');
 
             // Redirection ou autre action après suppression
-            window.location.href = "accueuil.html"; // Exemple : rediriger vers la page d'accueil après suppression
+            window.location.href = "accueil.html"; // Exemple : rediriger vers la page d'accueil après suppression
 
 
         } catch (error) {
