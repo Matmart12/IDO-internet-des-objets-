@@ -609,9 +609,9 @@ app.delete('/sup_Actu_id/:id', (req, res) => {
     });
 });
 
-app.delete('/sup_Lien/:idService:nomCate', (req, res) => {
+app.delete('/sup_Lien_service_cat/:idService:nomCate', (req, res) => {
     const { idService, nomCate } = req.params;
-    pool.query('DELETE FROM Lien WHERE idService=? AND nomCategorie = ?', [idService, nomCate], (err, result) => {
+    pool.query('DELETE FROM Lien WHERE idService=? AND nomCategorie = ?', [idService,nomCate], (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).send('Erreur serveur');
@@ -620,7 +620,29 @@ app.delete('/sup_Lien/:idService:nomCate', (req, res) => {
     });
 });
 
-app.delete('/sup_LienActu/:idActu:nomCate', (req, res) => {
+app.delete('/sup_Lien_service/:idService', (req, res) => {
+    const { idService, nomCate } = req.params;
+    pool.query('DELETE FROM Lien WHERE idService=?', [idService], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Erreur serveur');
+        }
+        res.status(200).json({ message: 'Élément supprimé avec succès' });
+    });
+});
+
+app.delete('/sup_LienActu_actu/:idActu', (req, res) => {
+    const { idService, nomCate } = req.params;
+    pool.query('DELETE FROM LienActu WHERE idActu=?', [idActu], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Erreur serveur');
+        }
+        res.status(200).json({ message: 'Élément supprimé avec succès' });
+    });
+});
+
+app.delete('/sup_LienActu_actu_cat/:idActu:nomCate', (req, res) => {
     const { idActu, nomCate } = req.params;
     pool.query('DELETE FROM LienActu WHERE idActu=? AND nomCategorie = ?', [idActu, nomCate], (err, result) => {
         if (err) {
