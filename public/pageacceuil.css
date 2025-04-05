@@ -1,0 +1,156 @@
+html {
+  font-size: 62.5%;
+}
+
+body {	
+  font-weight: 400;
+  line-height: 1.3;
+  font-family: Verdana;
+}
+  
+
+div.header {
+	background-image: url("../image/acceuilheader.png");
+	min-height: 700px;
+	background-size : 100%;		
+	background-repeat:no-repeat; 
+}
+
+
+.header {
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.header-menu {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+}
+
+	
+
+.header .container {
+  max-width: 144rem;
+}
+
+
+.header-menu {
+    background-color: #f5f5f5;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.header-barre {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    padding: 10px 20px;
+}
+
+.logo img {
+    display: block;
+}
+
+#menu ul {
+    list-style: none;
+    display: flex;
+
+}
+
+#menu li {
+  margin-left: 50px;
+	margin-right: 20px;
+	font-size: 25px;
+}
+
+#menu a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+#menu a:hover {
+	border-bottom: 4px solid #8FBC8F;
+}
+
+
+#resultats {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+/* Liste des résultats */
+#resultats ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* Chaque article dans la liste */
+#resultats ul li {
+  padding: 10px;
+  margin: 5px 0;
+  border-bottom: 1px solid #ddd;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Ajouter un survol sur les articles */
+#resultats ul li:hover {
+  background-color: #e9f5f9;
+  cursor: pointer;
+}
+
+/* Message quand aucun résultat n'est trouvé */
+#resultats p {
+  font-size: 18px;
+  color: #333;
+  font-weight: bold;
+}
+
+
+.actualites-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.actualites-container h2 {
+  color: #333;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+.actualite-card {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.actualite-card h3 {
+  color: #2c3e50;
+  margin-top: 0;
+}
+
+.actualite-card p {
+  color: #666;
+}
+
+.actualite-card small {
+  color: #999;
+  font-size: 0.8em;
+}
