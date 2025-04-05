@@ -313,7 +313,7 @@ app.post('/Creer_Residence', (req, res) => {
             res.status(500).send('erreur serveur');
         }
         else {
-            res.send('Ville ajouté avec succès!')
+            res.send('Residence ajouté avec succès!')
         }
     })
 });
@@ -326,7 +326,7 @@ app.post('/Creer_Service', (req, res) => {
             res.status(500).send('erreur serveur');
         }
         else {
-            res.send('Ville ajouté avec succès!')
+            res.send('Service ajouté avec succès!')
         }
     })
 });
@@ -339,7 +339,7 @@ app.post('/Creer_Categorie', (req, res) => {
             res.status(500).send('erreur serveur');
         }
         else {
-            res.send('Ville ajouté avec succès!')
+            res.send('Categorie ajouté avec succès!')
         }
     })
 });
@@ -352,7 +352,7 @@ app.post('/Creer_Lien', (req, res) => {
             res.status(500).send('erreur serveur');
         }
         else {
-            res.send('Ville ajouté avec succès!')
+            res.send('Lien ajouté avec succès!')
         }
     })
 });
@@ -365,7 +365,7 @@ app.post('/Creer_LienActu', (req, res) => {
             res.status(500).send('erreur serveur');
         }
         else {
-            res.send('Ville ajouté avec succès!')
+            res.send('LienActu ajouté avec succès!')
         }
     })
 });
@@ -378,7 +378,7 @@ app.post('/Creer_Actu', (req, res) => {
             res.status(500).send('erreur serveur');
         }
         else {
-            res.send('Ville ajouté avec succès!')
+            res.send('Actu ajouté avec succès!')
         }
     })
 });
