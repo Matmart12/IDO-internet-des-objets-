@@ -18,14 +18,6 @@ app.use(cors({
     credentials: true
 }));
 
-// Configuration de la session (une seule fois)
-app.use(session({
-    secret: 'maclesecrete',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }
-}));
-
 // Middleware pour les fichiers statiques (une seule fois)
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -39,12 +31,16 @@ app.use('/api/auth', routes);
 
 
 
-// ... le reste de votre configuration existante
+// configuration de la session
 app.use(session({
-    secret: 'maclesecrete', // Changez ceci par une chaîne complexe
+    secret: 'maclesecrete',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false } // Mettez `true` si vous utilisez HTTPS
+    cookie: { 
+        secure: false,
+        httpOnly: true,
+        sameSite: 'lax' // Protection contre les attaques CSRF
+    }
 }));
 
 // Créer le pool de connexions
@@ -177,6 +173,42 @@ app.post('/photo', (req, res) => {
             res.send(`Fichier ${filename} sauvegardé`);
         });
     });
+});
+
+
+app.post('/connexion', async (req, res) => {
+    try {
+        const { mail, mdp } = req.body;
+        const [user] = await pool.query('SELECT id, mail FROM Resident WHERE mail = ? AND mdp = ?', [mail, mdp]);
+
+        if (user) {
+            req.session.user = { 
+                id: user.id, 
+                mail: user.mail 
+            };
+            res.json({ success: true });
+        } else {
+            res.status(401).json({ error: "Identifiants incorrects" });
+        }
+    } catch (error) {
+        res.status(500).json({ error: "Erreur serveur" });
+    }
+});
+
+// Exemple: route pour récupérer le profil utilisateur
+app.get('/session', (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ error: "Non connecté" });
+    }
+
+    // Récupère les données de la session
+    const userData = {
+        id: req.session.user.id,
+        mail: req.session.user.mail,
+        // Ajoutez d'autres champs si nécessaire (ex: abonnement)
+    };
+
+    res.json(userData);
 });
 
 app.get('/check-session', (req, res) => { //savoir si l'utilisateur est connecté
@@ -565,7 +597,7 @@ app.put('/modif_Resident_genre', (req, res) => {
     );
 });
 
-app.put('/modif_Resident_nom', (req, res) => {
+app.put('/modif_Resident_nom/:id', (req, res) => {
     const { id } = req.params;
     const { nom } = req.body;
 
@@ -581,7 +613,7 @@ app.put('/modif_Resident_nom', (req, res) => {
     );
 });
 
-app.put('/modif_Resident_prenom', (req, res) => {
+app.put('/modif_Resident_prenom/:id', (req, res) => {
     const { id } = req.params;
     const { prenom } = req.body; // Remplacez par vos champs
 
@@ -597,7 +629,7 @@ app.put('/modif_Resident_prenom', (req, res) => {
     );
 });
 
-app.put('/modif_Resident_mail', (req, res) => {
+app.put('/modif_Resident_mail/:id', (req, res) => {
     const { id } = req.params;
     const { mail } = req.body; // Remplacez par vos champs
 
@@ -613,7 +645,7 @@ app.put('/modif_Resident_mail', (req, res) => {
     );
 });
 
-app.put('/modif_Resident_mdp', (req, res) => {
+app.put('/modif_Resident_mdp/:id', (req, res) => {
     const { id } = req.params;
     const { mdp } = req.body; // Remplacez par vos champs
 
@@ -629,7 +661,7 @@ app.put('/modif_Resident_mdp', (req, res) => {
     );
 });
 
-app.put('/modif_Resident_abonnement', (req, res) => {
+app.put('/modif_Resident_abonnement/:id', (req, res) => {
     const { id } = req.params;
     const { abonnement } = req.body; // Remplacez par vos champs
 
@@ -645,7 +677,7 @@ app.put('/modif_Resident_abonnement', (req, res) => {
     );
 });
 
-app.put('/modif_Ville_nom', (req, res) => {
+app.put('/modif_Ville_nom/:id', (req, res) => {
     const { idVille } = req.params;
     const { nom } = req.body; // Remplacez par vos champs
 
@@ -661,7 +693,7 @@ app.put('/modif_Ville_nom', (req, res) => {
     );
 });
 
-app.put('/modif_Service_nom', (req, res) => {
+app.put('/modif_Service_nom/:id', (req, res) => {
     const { id } = req.params;
     const { nom } = req.body; // Remplacez par vos champs
 
@@ -677,7 +709,7 @@ app.put('/modif_Service_nom', (req, res) => {
     );
 });
 
-app.put('/modif_Service_Description', (req, res) => {
+app.put('/modif_Service_Description/:id', (req, res) => {
     const { id } = req.params;
     const { descrip } = req.body; // Remplacez par vos champs
 
@@ -693,7 +725,7 @@ app.put('/modif_Service_Description', (req, res) => {
     );
 });
 
-app.put('/modif_Actu_nom', (req, res) => {
+app.put('/modif_Actu_nom/:id', (req, res) => {
     const { id } = req.params;
     const { nom } = req.body; // Remplacez par vos champs
 
@@ -709,7 +741,7 @@ app.put('/modif_Actu_nom', (req, res) => {
     );
 });
 
-app.put('/modif_Actu_Descrip', (req, res) => {
+app.put('/modif_Actu_Descrip/:id', (req, res) => {
     const { id } = req.params;
     const { descrip } = req.body; // Remplacez par vos champs
 

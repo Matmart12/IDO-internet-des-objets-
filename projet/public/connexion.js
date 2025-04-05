@@ -50,9 +50,23 @@ document.addEventListener('DOMContentLoaded', async function() {
 
             const Resident = await recupMDPResident(mail);
             if (Resident.mdp == mdp && Resident.abonnement!="nonVerif") {
-                req.session.user.id=Resident.id;
-                req.session.user.mail=Resident.mail
-                window.location.href = "accueuil.html"
+                try {
+                    const response = await fetch('http://localhost:5000/api/auth/connexion', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ mail, mdp }),
+                        credentials: 'include'
+                    });
+                    const data = await response.json();
+            
+                    if (data.success) {
+                        window.location.href = "accueuil.html";
+                    } else {
+                        alert("Identifiants incorrects");
+                    }
+                } catch (error) {
+                    console.error("Erreur:", error);
+                }
             }
         }
         function Connect() {
