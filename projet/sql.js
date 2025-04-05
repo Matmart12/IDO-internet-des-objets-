@@ -677,6 +677,22 @@ app.put('/modif_Resident_abonnement/:id', (req, res) => {
     );
 });
 
+app.put('/modif_Resident_age/:id', (req, res) => {
+    const { id } = req.params;
+    const { age } = req.body; // Remplacez par vos champs
+
+    pool.query('UPDATE Resident SET age = ? WHERE id = ?',
+        [abonnement, id],
+        (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Erreur serveur');
+            }
+            res.send('Élément modifié avec succès');
+        }
+    );
+});
+
 app.put('/modif_Ville_nom/:id', (req, res) => {
     const { idVille } = req.params;
     const { nom } = req.body; // Remplacez par vos champs
