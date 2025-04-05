@@ -64,7 +64,6 @@ document.addEventListener('DOMContentLoaded', async function() {
                     const data = await response.json();
             
                     if (data.success) {
-                        alert("identifiants corrects")
                         window.location.href = "accueil.html";
                     } else {
                         alert("Identifiants incorrects");
