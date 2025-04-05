@@ -656,7 +656,7 @@ app.delete('/sup_Lien_service/:idService', (req, res) => {
 });
 
 app.delete('/sup_LienActu_actu/:idActu', (req, res) => {
-    const { idService, nomCate } = req.params;
+    const { idActu } = req.params;
     pool.query('DELETE FROM LienActu WHERE idActu=?', [idActu], (err, result) => {
         if (err) {
             console.error(err);
