@@ -539,6 +539,22 @@ app.get('/Recherche_Actu_temps', (req, res) => {
     })
 });
 
+app.get('/Recherche_Actu_Ville', (req, res) => {
+    const { idVille } = req.query; // Récupère l'ID de la ville passé dans la requête
+
+    pool.query(
+        `SELECT a.id, a.nom, a.descrip, a.apparition
+            FROM Actu a WHERE a.idVille = ? 
+            ORDER BY a.apparition DESC;`, [idVille], (err, results) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Erreur serveur');
+        } else {
+            res.json(results); // Retourne les événements sous forme de JSON
+        }
+    });
+});
+
 app.get('/Recherche_Actu_Ville_temps', (req, res) => {
     const { idv } = req.query
     pool.query('SELECT nom FROM Actu  WHERE	idVille=? ORDER BY a.apparition DESC LIMIT 5;', [idv], (err, results) => {
