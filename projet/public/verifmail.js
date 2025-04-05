@@ -2,7 +2,7 @@ console.log("Script chargé !");
 document.addEventListener("DOMContentLoaded", function () {
     console.log("DOM chargé"); // Vérifie si le DOM est bien chargé
 
-    document.getElementById('formInscription').addEventListener('submit', function (event) {
+    document.getElementById('formvérif').addEventListener('submit', function (event) {
         event.preventDefault();  // Empêche la soumission du formulaire classique
         console.log("Le formulaire est soumis");
         ajouterElement(event);

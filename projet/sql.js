@@ -36,7 +36,7 @@ app.use(session({
     secret: 'maclesecrete',
     resave: false,
     saveUninitialized: true,
-    cookie: { 
+    cookie: {
         secure: false,
         httpOnly: true,
         sameSite: 'lax' // Protection contre les attaques CSRF
@@ -182,9 +182,9 @@ app.post('/connexion', async (req, res) => {
         const [user] = await pool.query('SELECT id, mail FROM Resident WHERE mail = ? AND mdp = ?', [mail, mdp]);
 
         if (user) {
-            req.session.user = { 
-                id: user.id, 
-                mail: user.mail 
+            req.session.user = {
+                id: user.id,
+                mail: user.mail
             };
             res.json({ success: true });
         } else {
@@ -246,12 +246,14 @@ app.post('/send-email', (req, res) => {
     const { to, subject, html } = req.body;
 
     const mailOptions = {
-        from: 'projectcy395@gmail.com',
+        from: 'projetcy395@gmail.com',
         to,
         subject,
         html: html,
     };
-
+    if (!to || !subject || !html) {
+        return res.status(400).json({ error: "Tous les champs sont requis" });
+    }
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
             console.error('Erreur:', error);

@@ -20,8 +20,12 @@ async function sendEmail(to, subject, html) {
             },
             body: JSON.stringify({ to, subject, html }),
         });
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Échec de l'envoi");
+        }
+        alert("Inscription réussie ! Un email de vérification a été envoyé.");
         const result = await response.text();
-        console.log(result);
         window.location.href = "connexion.html";
     } catch (error) {
         console.error('Erreur:', error);
