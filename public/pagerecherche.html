@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Résultats de recherche</title>
+        <link rel="stylesheet" type="text/css" href="css/pageacceuil.css">
+        <style>
+            .result-item {
+                border: 1px solid #ddd;
+                padding: 15px;
+                margin-bottom: 10px;
+                border-radius: 5px;
+            }
+            .result-item h3 {
+                margin-top: 0;
+                color: #2c3e50;
+            }
+            .no-results {
+                color: #7f8c8d;
+                font-style: italic;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <div class="header">
+            <header class="header-menu" role="banner">
+                <div class="header-barre">
+                    <h1 class="logo">
+                        <img alt="Logo Ville Intelligente" src="image/logoville.png" width="150" height="100">
+                    </h1>
+                    <nav id="menu">
+                        <ul>
+                            <li><a href="lieuxinteret.html">Lieux d'intérêt</a></li>
+                            <li><a href="transport.html">Transports</a></li>
+                            <li><a href="Evenements.html">Evènements</a></li>
+                            <li><a href="Abonnement.html">Abonnement</a></li>
+                            <li><a class="special" href="Profil.html">Mon espace</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>   
+        </div>
+
+        <div class="content">
+            <h2 id="search-title">Résultats de recherche</h2>
+            <div id="results-container"></div>
+        </div>
+
+        
+         
+        
+        <script src="pagerecherche.js"></script>
+    </body>
+</html>
