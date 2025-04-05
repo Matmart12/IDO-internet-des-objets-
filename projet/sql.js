@@ -137,6 +137,14 @@ const createTables = async () => {
                 FOREIGN KEY (idVille) REFERENCES Ville(id)
             );`, "Actu");
 
+            await executeQuery(`
+                CREATE TABLE IF NOT EXISTS LienActu (
+                    nomCategorie CHAR(40),
+                    idActu INT,
+                    FOREIGN KEY (idActu) REFERENCES Actu(id),
+                    FOREIGN KEY (nomCategorie) REFERENCES Categorie(nom)
+                );`, "LienActu");
+
         console.log("🎉 Toutes les tables ont été créées avec succès !");
     } catch (error) {
         console.error("❌ Une erreur est survenue lors de la création des tables :", error);
