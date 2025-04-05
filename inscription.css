@@ -1,0 +1,157 @@
+/* Général */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+legend {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+    color:black;
+}
+
+p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+
+/* Formulaire */
+form {
+    background-color: #fff;
+    width: 40%; /* Formulaire plus petit (40%) */
+    margin: 30px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-spacing: 5px; /* Réduit l'espacement entre les lignes */
+}
+
+input[type="text"], input[type="email"], input[type="number"], input[type="password"], input[type="file"] {
+    width: 100%;
+    padding: 8px; /* Réduit la taille de l'espace autour du texte */
+    margin: 8px 0; /* Réduit l'espace entre les champs */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+input[type="radio"] {
+    margin-right: 5px; /* Réduit l'espace entre les boutons radio */
+}
+
+input[type="submit"], button {
+    width: 100%;
+    padding: 10px; /* Réduit l'espace du bouton */
+    margin: 8px 0; /* Réduit l'espace entre le bouton et le champ précédent */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    font-size: 16px;
+}
+
+input[type="submit"]:hover, button:hover {
+    background-color: black;
+}
+
+/* Champs obligatoires */
+input[required] {
+    border-color: #e74c3c;
+}
+
+input[required]:focus {
+    border-color: #c0392b;
+}
+
+/* Bouton d'inscription */
+#inscription {
+    background-color: red;
+}
+
+#inscription:hover {
+    background-color: red;
+}
+
+/* Alignement du bouton de connexion */
+#connexion {
+    background-color: red;
+}
+
+#connexion:hover {
+    background-color: red;
+}
+
+/* Mise en page de la section droite avec l'image */
+#divdroit {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+#divdroit img {
+    border-radius: 5px;
+}
+
+/* Section de genre */
+#genre {
+    margin-right: 5px; /* Réduit l'espacement des options de genre */
+}
+
+/* Stylisation du tableau */
+table td {
+    padding: 5px; /* Réduit l'espacement à l'intérieur du tableau */
+}
+
+/* Styles supplémentaires pour les messages d'erreur */
+span.pointer {
+    cursor: pointer;
+    color: black;
+    font-weight: bold;
+}
+
+span.pointer:hover {
+    text-decoration: underline;
+}
+#header {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 1000; /* S'assurer que le bouton soit au-dessus de tout */
+}
+
+#header .logo {
+    background-color: #fff;
+    color: #000;
+    padding: 8px 20px;
+    font-weight: bold;
+    font-size: 22px;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: background-color 0.3s;
+    border: 2px solid #f28b9c;
+}
+
+#header .logo:hover {
+    background-color: #f28b9c;
+    color: white;
+}
