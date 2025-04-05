@@ -1,0 +1,65 @@
+/* Général */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 20px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Lieu item */
+.lieu-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 10px;
+    padding: 20px;
+    width: 250px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.lieu-item:hover {
+    transform: scale(1.05);
+}
+
+.lieu-item img.lieu-photo {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.lieu-item strong {
+    font-size: 1.2em;
+    color: #3498db;
+}
+
+/* Free Tour message */
+.lieu-item strong + br + strong {
+    color: #27ae60;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+    .lieu-item {
+        width: 90%;
+    }
+}
