@@ -306,8 +306,8 @@ app.post('/Creer_Resident', (req, res) => {
 });
 
 app.post('/Creer_Residence', (req, res) => {
-    const { numéro, rue, idVille } = req.body;
-    pool.query('INSERT INTO Residence (numéro, rue, idVille) VALUES(?,?,?)', [numéro, rue, idVille], (err, result) => {
+    const { numero, rue, idVille } = req.body;
+    pool.query('INSERT INTO Residence (numero, rue, idVille) VALUES(?,?,?)', [numero, rue, idVille], (err, result) => {
         if (err) {
             console.error(err);
             res.status(500).send('erreur serveur');
@@ -423,6 +423,19 @@ app.get('/Recherche_Ville_nom_departement', (req, res) => {
     })
 });
 
+app.get('/Recherche_Ville_id', (req, res) => {
+    const { id } = req.query
+    pool.query('SELECT * FROM Ville WHERE id=?', [id], (err, results) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('erreur serveur');
+        }
+        else {
+            res.json(results);
+        }
+    })
+});
+
 app.get('/Recherche_Service_nom', (req, res) => {
     const { nom } = req.query
     pool.query('SELECT * FROM Service WHERE nom=?', [nom], (err, results) => {
@@ -518,6 +531,19 @@ app.get('/Recherche_Actu_Ville_temps', (req, res) => {
 app.get('/Recherche_Residence_ville_num_rue', (req, res) => {
     const { num, rue, idv } = req.query
     pool.query('SELECT * FROM Residence  WHERE numero=? AND rue=? AND idVille=? ', [num, rue, idv], (err, results) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('erreur serveur');
+        }
+        else {
+            res.json(results);
+        }
+    })
+});
+
+app.get('/Recherche_Residence_id', (req, res) => {
+    const {id} = req.query
+    pool.query('SELECT * FROM Residence WHERE id=? ',[id], (err, results) => {
         if (err) {
             console.error(err);
             res.status(500).send('erreur serveur');
@@ -712,6 +738,22 @@ app.put('/modif_Resident_abonnement/:id', (req, res) => {
     );
 });
 
+app.put('/modif_Resident_adressephoto/:id', (req, res) => {
+    const { id } = req.params;
+    const { idRes } = req.body; // Remplacez par vos champs
+
+    pool.query('UPDATE Resident SET adressephoto = ? WHERE id = ?', [idRes, id], 
+        (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Erreur serveur');
+            }
+            
+            res.send('Élément modifié avec succès');
+        }
+    );
+});
+
 app.put('/modif_Resident_age/:id', (req, res) => {
     const { id } = req.params;
     const { age } = req.body; // Remplacez par vos champs
@@ -728,17 +770,17 @@ app.put('/modif_Resident_age/:id', (req, res) => {
     );
 });
 
-app.put('/modif_Resident_abonnement/:id', (req, res) => {
+app.put('/modif_Resident_idResidence/:id', (req, res) => {
     const { id } = req.params;
-    const { genre } = req.body; // Remplacez par vos champs
+    const { idRes } = req.body; // Remplacez par vos champs
 
-    pool.query('UPDATE Resident SET genre = ? WHERE id = ?',
-        [abonnement, id],
+    pool.query('UPDATE Resident SET idResidence = ? WHERE id = ?', [idRes, id], 
         (err, result) => {
             if (err) {
                 console.error(err);
                 return res.status(500).send('Erreur serveur');
             }
+            
             res.send('Élément modifié avec succès');
         }
     );
