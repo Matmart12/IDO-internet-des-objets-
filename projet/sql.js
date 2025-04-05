@@ -509,7 +509,7 @@ app.delete('/sup_Resident_mail/:mail', (req, res) => {
             console.error(err);
             return res.status(500).send('Erreur serveur');
         }
-        res.send('Élément supprimé avec succès');
+        res.status(200).json({ message: 'Élément supprimé avec succès' });
     });
 });
 
@@ -520,7 +520,7 @@ app.delete('/sup_Resident_id/:id', (req, res) => {
             console.error(err);
             return res.status(500).send('Erreur serveur');
         }
-        res.send('Élément supprimé avec succès');
+        res.status(200).json({ message: 'Élément supprimé avec succès' });
     });
 });
 
@@ -531,7 +531,7 @@ app.delete('/sup_Service_Ville/:idVille', (req, res) => {
             console.error(err);
             return res.status(500).send('Erreur serveur');
         }
-        res.send('Élément supprimé avec succès');
+        res.status(200).json({ message: 'Élément supprimé avec succès' });
     });
 });
 
@@ -542,7 +542,7 @@ app.delete('/sup_Ville_id/:id', (req, res) => {
             console.error(err);
             return res.status(500).send('Erreur serveur');
         }
-        res.send('Élément supprimé avec succès');
+        res.status(200).json({ message: 'Élément supprimé avec succès' });
     });
 });
 
@@ -553,7 +553,7 @@ app.delete('/sup_Actu_id/:id', (req, res) => {
             console.error(err);
             return res.status(500).send('Erreur serveur');
         }
-        res.send('Élément supprimé avec succès');
+        res.status(200).json({ message: 'Élément supprimé avec succès' });
     });
 });
 
@@ -564,7 +564,7 @@ app.delete('/sup_Lien/:idService:nomCate', (req, res) => {
             console.error(err);
             return res.status(500).send('Erreur serveur');
         }
-        res.send('Élément supprimé avec succès');
+        res.status(200).json({ message: 'Élément supprimé avec succès' });
     });
 });
 
@@ -575,7 +575,7 @@ app.delete('/sup_Actu_nom/:nom', (req, res) => {
             console.error(err);
             return res.status(500).send('Erreur serveur');
         }
-        res.send('Élément supprimé avec succès');
+        res.status(200).json({ message: 'Élément supprimé avec succès' });
     });
 });
 
