@@ -320,7 +320,7 @@ app.post('/Creer_Residence', (req, res) => {
 
 app.post('/Creer_Service', (req, res) => {
     const { nom, descrip, idVille } = req.body;
-    pool.query('INSERT INTO Service (nom, descrip, idVille) VALUES(?,?)', [nom, descrip, idVille], (err, result) => {
+    pool.query('INSERT INTO Service (nom, descrip, idVille) VALUES(?,?,?)', [nom, descrip, idVille], (err, result) => {
         if (err) {
             console.error(err);
             res.status(500).send('erreur serveur');
