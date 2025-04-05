@@ -24,7 +24,7 @@ app.use(session({
 
 // Configuration CORS (une seule fois, placée tôt)
 app.use(cors({
-    origin: ['http://localhost:5000', 'http://127.0.0.1:5000', 'http://localhost:3000', 'http://127.0.0.1:3000'],
+    origin: ['null','http://localhost:5000', 'http://127.0.0.1:5000', 'http://localhost:3000', 'http://127.0.0.1:3000'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
@@ -501,6 +501,30 @@ app.get('/Recherche_Service_id', (req, res) => {
     })
 });
 
+app.get('/Recherche_Service', (req, res) => {
+    pool.query('SELECT * FROM Service', (err, results) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('erreur serveur');
+        }
+        else {
+            res.json(results);
+        }
+    })
+});
+
+app.get('/Recherche_Actu', (req, res) => {
+    const {} = req.query
+    pool.query('SELECT a.* FROM Actu a ORDER BY a.apparition',(err, results) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('erreur serveur');
+        }
+        else {
+            res.json(results);
+        }
+    })
+});
 
 app.get('/Recherche_Actu_temps', (req, res) => {
     const { } = req.query
