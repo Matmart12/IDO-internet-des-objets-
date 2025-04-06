@@ -26,7 +26,7 @@ app.use((req, res, next) => {
     console.log('Session:', req.session); // Debug
     next();
 });
-    
+
 // Configuration CORS (une seule fois, placée tôt)
 app.use(cors({
     origin: ['null','http://localhost:5000', 'http://127.0.0.1:5000', 'http://localhost:3000', 'http://127.0.0.1:3000'],
@@ -204,7 +204,7 @@ app.get('/session', (req, res) => {
 
 app.get('/check-session', (req, res) => { //savoir si l'utilisateur est connecté
     if (req.session.userId) {
-        res.json({ isLoggedIn: true });
+        res.json({ isLoggedIn: true, id: req.session.userId });
     } else {
         res.json({ isLoggedIn: false });
     }

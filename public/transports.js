@@ -13,6 +13,57 @@ async function session() {
   }
 }
 
+async function rechercheResident(id) {
+  try {
+    const response = await fetch(`http://localhost:5000/Recherche_Resident_id?id=${encodeURI(id)}`);
+    const data = await response.json();
+
+    if (data.length === 0) {
+      console.log('Aucun résident trouvé.');
+      return -1;
+    }
+
+    return data[0];
+  } catch (error) {
+    console.error('Erreur:', error);
+    return -2;
+  }
+}
+
+async function rechercheResidence(id) {
+  try {
+    const response = await fetch(`http://localhost:5000/Recherche_Residence_id?id=${encodeURI(id)}`);
+    const data = await response.json();
+
+    if (data.length === 0) {
+      console.log('Aucune résidence trouvée.');
+      return -1;
+    }
+
+    return data[0];
+  } catch (error) {
+    console.error('Erreur:', error);
+    return -2;
+  }
+}
+
+async function rechercheVille(id) {
+  try {
+    const response = await fetch(`http://localhost:5000/Recherche_Ville_id?id=${encodeURI(id)}`);
+    const data = await response.json();
+
+    if (data.length === 0) {
+      console.log('Aucune ville trouvée.');
+      return -1;
+    }
+
+    return data[0];
+  } catch (error) {
+    console.error('Erreur:', error);
+    return -2;
+  }
+}
+
 async function rechercherTransport() {
   console.log('recherche');
   try {
@@ -48,30 +99,70 @@ async function afficherTransport() {
     return;
   }
 
-  const transportList = document.getElementById('transportList');
-  // Vider la liste avant d'ajouter les transports (éviter les doublons)
-  transportList.innerHTML = "";
+  try {
+    // 1. Vérifier la session
+    const sess = await session();
+    if (sess <= 0) {
+      console.error('Session invalide');
+      return;
+    }
 
-  // Parcourir le tableau des services et ajouter chaque service au DOM
-  if (Array.isArray(data)) {
+    // 2. Récupérer le résident
+    const Resident = await rechercheResident(sess);
+    if (!Resident || Resident === -1 || Resident === -2) {
+      console.error('Résident non trouvé');
+      return;
+    }
+
+    // 3. Récupérer la résidence
+    const Residence = await rechercheResidence(Resident.idResidence);
+    if (!Residence || Residence === -1 || Residence === -2) {
+      console.error('Résidence non trouvée');
+      return;
+    }
+
+    // 4. Récupérer la ville
+    const Ville = await rechercheVille(Residence.idVille);
+    if (!Ville || Ville === -1 || Ville === -2) {
+      console.error('Ville non trouvée');
+      return;
+    }
+
+    console.log('Ville trouvée:', Ville); // Debug
+
+    // 5. Récupérer les transports
+    const data = await rechercherTransport();
+    if (data === -1 || !Array.isArray(data)) {
+      console.log('Aucun transport à afficher');
+      return;
+    }
+
+    // 6. Afficher les transports
+    const transportList = document.getElementById('transportList');
+    transportList.innerHTML = "";
+
     data.forEach((service) => {
-      const li = document.createElement("li"); // Crée un nouvel élément <li> pour chaque service
-      li.className = "transport-item"; // Ajoute une classe pour appliquer les styles CSS
-      li.innerHTML = `
-            <strong>${service.nom} ${service.descrip}</strong> - ${service.idVille}
-        `; // Ajoute le nom, la description et la ville du transport
-      transportList.appendChild(li); // Ajoute l'élément <li> à la liste des transports
+      if (service.idVille == Ville.id) {
+        const li = document.createElement("li");
+        li.className = "transport-item";
+        li.innerHTML = `
+          <strong>${service.nom} ${service.descrip}</strong> - ${service.idVille}
+        `;
+        transportList.appendChild(li);
+      }
     });
-  } else {
-    console.error('Les données récupérées ne sont pas un tableau valide.');
+  }
+  catch (error) {
+    console.error('Erreur dans afficherTransport:', error);
   }
 }
 
 document.addEventListener('DOMContentLoaded', async function () {
-  sess=await session();
-  if(sess<=0){
-    window.location.href="connexion.html"
+  const sess = await session();
+  if (sess <= 0) {
+    window.location.href = "connexion.html"
   }
-afficherTransport();
+  console.log("L'id de la session:", sess)
+  afficherTransport();
 });
 console.log('fin');
