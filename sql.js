@@ -801,7 +801,7 @@ app.delete('/sup_Actu_nom/:nom', (req, res) => {
     });
 });
 
-app.put('/modif_Resident_genre', (req, res) => {
+app.put('/modif_Resident_genre/:id', (req, res) => {
     const { id } = req.params;
     const { genre } = req.body;
 
