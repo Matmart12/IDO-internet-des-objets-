@@ -306,7 +306,7 @@ function afficherMail() {
     const td2 = document.createElement("td");
     td2.innerHTML = `${profilData.email}`;
     tr.appendChild(td2);
-
+    /*
     const td3 = document.createElement("td");
     td3.innerHTML = `<input id="email"} " placeholder="nouveau email" type="mail" name="mail" >`;
     tr.appendChild(td3);
@@ -314,7 +314,7 @@ function afficherMail() {
     const td4 = document.createElement("td");
     td4.innerHTML = `<button id="modification" type="button" onclick="modifierElement('mail')">Modifier</button>`;
     tr.appendChild(td4);
-
+    */
     tableInfo.appendChild(tr);
 }
 function afficherMdP() {
@@ -593,11 +593,11 @@ async function Sauv() {
     if (profilData.prenom != profilSave.prenom) {
         await sauverPrenom(profilData.prenom);
         profilSave.prenom = profilData.prenom;
-    }
+    }/*
     if (profilData.email != profilSave.email) {
         await sauverMail(profilData.email);
         profilSave.email = profilData.email;
-    }
+    }*/
     if (profilData.mdp != profilSave.mdp) {
         await sauverMdP(profilData.mdp);
         profilSave.mdp = profilData.mdp;
@@ -613,11 +613,11 @@ async function Sauv() {
     if (profilData.adressephoto != profilSave.adressephoto) {
         await sauverPhoto(profilData.adressephoto);
         profilSave.adressephoto = profilData.adressephoto;
-    }
+    }/*
     if (profilData.abo != profilSave.abo) {
         await sauverAbonnement(profilData.abo);
         profilSave.abo = profilData.abo;
-    }
+    }*/
     await sauverAutres();
 
     alert("Vos modifications ont bien été sauvegardées.");
@@ -757,6 +757,7 @@ async function sauverPrenom(prenom) {
         console.error('Erreur lors de la mise à jour du prenom:', error);
     }
 };
+/*
 async function sauverMail(email) {
     try {
         const response = await fetch(`http://localhost:5000/modif_Resident_mail/${profilSave.id}`, {
@@ -776,7 +777,7 @@ async function sauverMail(email) {
     } catch (error) {
         console.error('Erreur lors de la mise à jour du mail:', error);
     }
-};
+};*/
 async function sauverMdP(mdp) {
     try {
         const response = await fetch(`http://localhost:5000/modif_Resident_mdp/${profilSave.id}`, {
@@ -856,7 +857,7 @@ async function sauverPhoto(adressephoto) {
     } catch (error) {
         console.error('Erreur lors de la mise à jour du adressephoto:', error);
     }
-};
+};/*
 async function sauverAbonnement(abo) {
     try {
         const response = await fetch(`http://localhost:5000/modif_Resident_abonnement/${profilSave.id}`, {
@@ -876,7 +877,7 @@ async function sauverAbonnement(abo) {
     } catch (error) {
         console.error('Erreur lors de la mise à jour du abo:', error);
     }
-};
+};*/
 // recupérer l'id de l'utilisateur
 
 document.addEventListener('DOMContentLoaded', async function () {
