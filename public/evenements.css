@@ -1,7 +1,7 @@
 /* Définir les styles généraux pour la page */
 body {
     font-family: Arial, sans-serif;
-    background-image: url('marche2.jpg'); /* Ajouter l'image comme fond */
+    background-image: url('/photo/marche2.jpg'); /* Ajouter l'image comme fond */
     background-size: cover; /* Assure que l'image couvre toute la surface */
     background-position: center center; /* Centrer l'image */
     background-repeat: no-repeat; /* Empêcher la répétition de l'image */

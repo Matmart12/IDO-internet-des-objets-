@@ -74,7 +74,7 @@ async function testeconnexion() {
                 
                 if (sessionData.isLoggedIn) {
                     console.log("ID utilisateur:", data.userId); // Affiche l'ID
-                    window.location.href = "accueil.html";
+                    window.location.href = "pageacceuil.html";
                 } else {
                     alert("Erreur de session");
                 }
