@@ -45,9 +45,26 @@ async function rechercheMaire(idVille) {
     }
 }
 
+async function rechercheResidence(id) {
+    try {
+        const response = await fetch(`http://localhost:5000/Recherche_Residence_id?id=${encodeURI(id)}`);
+        const data = await response.json();
+
+        if (data.length === 0) {
+            console.log('Aucune résidence trouvée.');
+            return -1;
+        }
+
+        return data[0];
+    } catch (error) {
+        console.error('Erreur:', error);
+        return -2;
+    }
+}
+
 async function rechercheVille(idVille) {
     try {
-        const response = await fetch(`http://localhost:5000/Recherche_Maire?idVille=${encodeURI(idVille)}`);
+        const response = await fetch(`http://localhost:5000/Recherche_Ville_id?idVille=${encodeURI(idVille)}`);
         const data = await response.json();
 
         if (data.length === 0) {
@@ -91,15 +108,11 @@ async function ajouterElement(event) {
             await abonnement(resident.id, abo);
             return;
         }
-
+        const ResidenceVille= await rechercheResidence(resident.idResidence)
         // Cas Maire : vérification de la ville 
-        const idVille = await rechercheVille(resident.idResidence);
-        if (idVille <= 0) {
-            alert("Erreur lors de la recherche de la ville");
-            return;
-        }
+        console.log(ResidenceVille);
 
-        const maireData = await rechercheMaire(idVille);
+        const maireData = await rechercheMaire(ResidenceVille.idVille);
         if (!Array.isArray(maireData) || maireData.length === 0) {
             await abonnement(resident.id, abo); // Aucun maire trouvé
             return;

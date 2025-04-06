@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:,"> <!-- bloque la demande de favoricon.ico -->
+    <!-- <link rel="stylesheet" href="../css/inscription.css">-->
+    <title>Vérification d'Email</title>
+</head>
+
+<body>
+    <div id=divdroit> <img src="https://www.educol.net/coloriage-maison-dl28263.jpg" width="40px" alt=""></a></div>
+
+    <legend>
+        <form id="formvérif">
+            <h1>Vérification d'Email</h1>
+            <p>Les champs marqués d'une étoiles sont obligatoires</p>
+            <table>
+                <tr>
+                    <td colspan="2"><input id="email" placeholder="email*" type="email" name="email" required></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input id="password" placeholder="mot de passe*" type="password" name="password"
+                            required></button></td>
+                </tr>
+                <tr>
+                    <td colspan="2">Abonnement :
+                        <input type="radio" id="abo" name="abonnement" value="Simple" class="pointer" required><span
+                            class="pointer" onclick="Checked('Simple')">Simple</span>
+                        <input type="radio" id="abo" name="abonnement" value="Maire" class="pointer" required><span
+                            class="pointer" onclick="Checked('Maire')">Maire</span>
+                        <input type="radio" id="abo" name="abonnement" value="Admin" class="pointer" required><span
+                            class="pointer" onclick="Checked('Admin')">Admin</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><button id="connexion" type="button" onclick="Connect()">Se connecter ?</button></td>
+                    <td><button id="vérif" type="submit">Vérifier</button></td>
+                </tr>
+            </table>
+    </legend>
+    </form>
+    <script src="verifmail.js"></script>
+    </body>
