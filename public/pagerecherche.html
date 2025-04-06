@@ -2,24 +2,7 @@
 <html>
     <head>
         <title>Résultats de recherche</title>
-        <link rel="stylesheet" type="text/css" href="css/pageacceuil.css">
-        <link rel="icon" href="data:,"> <!-- bloque la demande de favoricon.ico -->
-        <style>
-            .result-item {
-                border: 1px solid #ddd;
-                padding: 15px;
-                margin-bottom: 10px;
-                border-radius: 5px;
-            }
-            .result-item h3 {
-                margin-top: 0;
-                color: #2c3e50;
-            }
-            .no-results {
-                color: #7f8c8d;
-                font-style: italic;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="pagerecherche.css">
     </head>
     
     <body>
@@ -27,7 +10,9 @@
             <header class="header-menu" role="banner">
                 <div class="header-barre">
                     <h1 class="logo">
-                        <img alt="Logo Ville Intelligente" src="image/logoville.png" width="150" height="100">
+                        <a href="pageacceuil.html">
+                            <img alt="Logo Ville Intelligente" src="../photo/logoville.png" width="150" height="100">
+                        </a>
                     </h1>
                     <nav id="menu">
                         <ul>
@@ -41,10 +26,26 @@
                 </div>
             </header>   
         </div>
-
-        <div class="content">
-            <h2 id="search-title">Résultats de recherche</h2>
-            <div id="results-container"></div>
+        <div class="main">
+            <h1 class="titre">Recherche</h1>
+            <div class="content">
+                <h2 id="search-title">Résultats de recherche</h2>
+            
+                <!-- Filtres de recherche simplifiés -->
+                <div class="search-filters">
+                    <div class="filter-group">
+                        <label for="content-type">Type de contenu</label>
+                        <select id="content-type">
+                            <option value="all">Tous</option>
+                            <option value="actu">Actualités</option>
+                            <option value="service">Services</option>
+                        </select>
+                    </div>
+                
+                    <button id="search-button" class="search-button">Rechercher</button>
+                </div>
+                <div id="results-container"></div>
+            </div>
         </div>
 
         
