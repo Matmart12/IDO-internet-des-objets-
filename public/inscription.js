@@ -1,3 +1,4 @@
+//si l'utilisateur est connecté, alors le déconnecte
 document.addEventListener('DOMContentLoaded', async function () {
     try {
         const response = await fetch('http://localhost:5000/check-session', {
@@ -15,6 +16,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     } catch (error) {
         console.error('Erreur lors de la vérification de la session:', error);
     }
+    //quand le bouton s'incrire est appuyé, test si la ville et la résidence est créée et si oui, envoie un mail de vérification et crée le compte de l'utilisateur
     document.getElementById('formInscription').addEventListener('submit', function (event) {
         event.preventDefault();  // Empêche la soumission du formulaire classique
         console.log("Le formulaire est soumis");
@@ -23,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
 });
 
-
+//envoie le mail
 async function sendEmail(to, subject, html) {
     try {
         const response = await fetch('http://localhost:5000/send-email', {
@@ -46,7 +48,7 @@ async function sendEmail(to, subject, html) {
 }
 
 
-
+//dans le nom mais c'est l'id qui est récupéré
 async function recupidVille(nom, departement) {
     try {
         const response = await fetch(`http://localhost:5000/Recherche_Ville_nom_departement?nom=${encodeURIComponent(nom)}&departement=${encodeURIComponent(departement)}`);
@@ -65,7 +67,7 @@ async function recupidVille(nom, departement) {
         return -1;
     }
 }
-
+//recherche s'il existe déjà un résident avec ce mail
 async function rechercheResident(mail) {
     try {
         const response = await fetch(`http://localhost:5000/Recherche_Resident_mail?mail=${encodeURI(mail)}`);
@@ -82,7 +84,7 @@ async function rechercheResident(mail) {
         return -2;
     }
 }
-
+//recherche si la résidence existe et si oui, alors renvoie l'id de la résidence
 async function recupidResidence(idVille, rue, numrue) {
     try {
         const response = await fetch(`http://localhost:5000/Recherche_Residence_ville_num_rue?num=${numrue}&idv=${idVille}&rue=${encodeURIComponent(rue)}`);
@@ -102,6 +104,7 @@ async function recupidResidence(idVille, rue, numrue) {
     }
 }
 
+//vérifie les données du formulaire pour ensuite inscrire et envoyer un mail de vérification au résident (l'abonnement=nonVérif tant que le mail n'est pas vérifié)
 async function ajouterElement(event) {
     event.preventDefault();
     const prenom = document.getElementById("prenom").value;

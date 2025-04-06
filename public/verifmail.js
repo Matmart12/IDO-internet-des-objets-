@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+//modifie l'abonnement d'un résident en fonction de l'id
 async function abonnement(id, abo) {
     try {
         const response = await fetch(`http://localhost:5000/modif_Resident_abonnement/${id}`, {
@@ -27,7 +28,7 @@ async function abonnement(id, abo) {
     }
 }
 
-
+//recherche s'il y a un Maire parmis les Résidents de la ville
 async function rechercheMaire(idVille) {
     try {
         const response = await fetch(`http://localhost:5000/Recherche_Maire?idVille=${encodeURI(idVille)}`);
@@ -44,7 +45,7 @@ async function rechercheMaire(idVille) {
         return -2;
     }
 }
-
+//dans le nom
 async function rechercheResidence(id) {
     try {
         const response = await fetch(`http://localhost:5000/Recherche_Residence_id?id=${encodeURI(id)}`);
@@ -62,9 +63,7 @@ async function rechercheResidence(id) {
     }
 }
 
-
-
-
+//vérifie que le mail est le mot de passe soient bon pour modifier l'abonnement
 async function ajouterElement(event) {
     const mail = document.getElementById("email").value;
     const mdp = document.getElementById("password").value;

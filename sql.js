@@ -27,7 +27,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// Configuration CORS (une seule fois, placée tôt)
+// Configuration CORS 
 app.use(cors({
     origin: ['null','http://localhost:5000', 'http://127.0.0.1:5000', 'http://localhost:3000', 'http://127.0.0.1:3000'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -35,10 +35,10 @@ app.use(cors({
     credentials: true
 }));
 
-// Middleware pour les fichiers statiques (une seule fois)
+// Middleware pour les fichiers statiques 
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Route favicon (après static mais avant les autres routes)
+// Route favicon
 app.get('/favicon.ico', (req, res) => {
     res.status(204).end();
 });
@@ -46,14 +46,14 @@ app.get('/favicon.ico', (req, res) => {
 // Routes API
 app.use('/api/auth', routes);
 
-// Créer le pool de connexions
+// Création du pool de connexions
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
     password: 'cytech0001',
     database: 'proj',
     waitForConnections: true,
-    connectionLimit: 10,
+    connectionLimit: 10, //limite de requetes en même temps
     queueLimit: 0
 });
 
@@ -77,7 +77,7 @@ const createTables = async () => {
     try {
         console.log('✅ Connexion au pool de base de données MySQL');
 
-        // Créer les tables
+        // Création des tables
         await executeQuery(`
             CREATE TABLE IF NOT EXISTS Ville (
                 id INT PRIMARY KEY AUTO_INCREMENT,
@@ -155,12 +155,13 @@ const createTables = async () => {
         console.error("❌ Une erreur est survenue lors de la création des tables :", error);
     }
 };
-
+//pour l'adresse de la photo
 const uploadsDir = './photo';
 if (!fs.existsSync(uploadsDir)) {
     fs.mkdirSync(uploadsDir);
 }
 
+//mise en place de la photo
 app.post('/photo', (req, res) => {
     if (!req.headers['content-type'].startsWith('multipart/form-data')) {
         return res.status(400).send('Format non supporté');
@@ -171,7 +172,7 @@ app.post('/photo', (req, res) => {
     req.on('end', () => {
         const data = Buffer.concat(body);
 
-        // Extraction basique de l'image (pour une vraie app, utilisez multer)
+        // Extraction basique de l'image 
         const match = data.toString('binary').match(/\r\n\r\n(.*)\r\n--/s);
         if (!match) return res.status(400).send('Image non valide');
 
@@ -187,7 +188,7 @@ app.post('/photo', (req, res) => {
 });
 
 
-// Exemple: route pour récupérer le profil utilisateur
+//récupération des données de l'utilisateur (seulement id)
 app.get('/session', (req, res) => {
     if (!req.session.user) {
         return res.status(401).json({ error: "Non connecté" });
@@ -219,20 +220,20 @@ app.get('/deconnexion', (req, res) => {    //se déconnecter
     });
 });
 
-
-const nodemailer = require('nodemailer');
 // Configuration du mail automatique
+const nodemailer = require('nodemailer');
+
 require('dotenv').config();//récup le mdp d'application de .env
 const transporter = nodemailer.createTransport({
-    service: 'gmail', // possible d'utiliser un autre service SMTP
+    service: 'gmail',
     auth: {
-        user: 'projetcy395@gmail.com', // l'email à utiliser
+        user: 'projetcy395@gmail.com',
 
         pass: process.env.MDP_APP_GMAIL, // "Mot de passe d'application qui se trouve dans .env"
     },
 });
 
-// Route pour envoyer un email
+// Route pour envoyer l'email
 app.post('/send-email', (req, res) => {
     const { to, subject, html } = req.body;
 
@@ -242,7 +243,7 @@ app.post('/send-email', (req, res) => {
         subject,
         html: html,
     };
-    if (!to || !subject || !html) {
+    if (!to || !subject || !html) { //au lieu d'un text, on a de l'html
         return res.status(400).json({ error: "Tous les champs sont requis" });
     }
     transporter.sendMail(mailOptions, (error, info) => {
@@ -257,7 +258,7 @@ app.post('/send-email', (req, res) => {
 });
 
 
-
+//savoir si l'utilisateur peut se connecter (si oui alors insère l'id dans les données de l'utilisateur)
 app.post('/testconnexion', (req, res) => {
     const { mail, mdp } = req.body;
 
@@ -286,6 +287,7 @@ app.post('/testconnexion', (req, res) => {
     });
 });
 
+//Insertion d'éléments dans les tables
 app.post('/Creer_Ville', (req, res) => {
     const { nom, departement } = req.body;
     pool.query('INSERT INTO Ville (nom, pays, departement) VALUES(?,?,?)', [nom, "France", departement], (err, result) => {
@@ -403,6 +405,8 @@ app.post('/Creer_LienActu', (req, res) => {
     })
 });
 
+
+//Recherche d'éléments dans les tables
 app.get('/Recherche_Categorie', (req, res) => {
     const { nom } = req.query
     pool.query('SELECT * FROM Categorie WHERE nom=?', [nom], (err, results) => {
@@ -680,6 +684,7 @@ app.get('/Recherche_Residence_id', (req, res) => {
     })
 });
 
+//suppression d'éléments dans les tables
 app.delete('/sup_Resident_mail/:mail', (req, res) => {
     const { mail } = req.params;
     pool.query('DELETE FROM Resident WHERE mail = ?', [mail], (err, result) => {
@@ -801,6 +806,8 @@ app.delete('/sup_Actu_nom/:nom', (req, res) => {
     });
 });
 
+
+//modification d'éléments dans les tables
 app.put('/modif_Resident_genre/:id', (req, res) => {
     const { id } = req.params;
     const { genre } = req.body;
@@ -1046,16 +1053,7 @@ app.get('/recherche-global', (req, res) => {
 });
 
 
-app.use(cors({
-    origin: ['http://localhost:5000', 'http://127.0.0.1:5000', 'http://localhost:3000', 'http://127.0.0.1:3000'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
-}));
-
-// Gestion des pré-vols OPTIONS
-app.options('*', cors());
-
+//lancement du serveur/site
 const PORT = 5000;
 app.get('/', (req, res) => {
     res.send('Bienvenue sur la page d\'accueuil!');
@@ -1065,6 +1063,7 @@ app.listen(PORT, async () => {
     console.log(`Serveur démarré sur http://localhost:${PORT}`);
     await createTables();
 });
+//lorsque l'on arrête le pool, message de fin.
 process.on('SIGINT', () => {
     pool.end(() => {
         console.log('Le pool de connexions MySQL a été fermé.');

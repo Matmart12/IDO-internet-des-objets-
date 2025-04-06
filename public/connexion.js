@@ -1,3 +1,5 @@
+
+//si l'utilisateur est connecté, le déconnecte automatiquement (vide les données utilisateurs)
 document.addEventListener('DOMContentLoaded', async function () {
     try {
         const response = await fetch('http://localhost:5000/check-session', {
@@ -15,7 +17,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     } catch (error) {
         console.error('Erreur lors de la vérification de la session:', error);
     }
-
+    //quand le bouton se connecter est cliquer fait les vérifs pour savoir s'il a le droit de se co et s'il a le droit, ça le connecte et l'envoie sur la page d'accueil
     document.getElementById('Connexion').addEventListener('click', async function (e) {
         e.preventDefault(); 
         try {
@@ -26,6 +28,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
 });
 
+//dans le nom
 async function recupResident(mail) {
     try {
         const response = await fetch(`http://localhost:5000/Recherche_Resident_mail?mail=${mail}`);
