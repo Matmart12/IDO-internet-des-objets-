@@ -170,7 +170,7 @@ async function modifierElement(type) {
     }
     if (type == 'photo') {
         const new_fileInput = document.getElementById("photo"); // Correction de l'ID
-        const new_adressephoto = "./photo/" + mail.replace(/[@.]/g, '_') + ".png";
+        const new_adressephoto = "./photo/" + mail  .replace(/[@.]/g, '_') + ".png";
         // Uploader la photo si elle existe
         if (fileInput.files.length > 0) {
             const formData = new FormData();
@@ -530,7 +530,10 @@ function afficherPhoto() {
     tr.appendChild(td1);
 
     const td2 = document.createElement("td");
-    td2.innerHTML = `${profilData.adressephoto}`;
+    const img= document.createElement("img");
+    img.src= "."+`${profilData.adressephoto}`;
+    img.alt="Photo de profil";
+    td2.appendChild(img)
     tr.appendChild(td2);
 
     const td3 = document.createElement("td");
