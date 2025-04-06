@@ -359,7 +359,7 @@ app.post('/Creer_Lien', (req, res) => {
 
 app.post('/Creer_LienActu', (req, res) => {
     const { idActu, nomCate } = req.body;
-    pool.query('INSERT INTO LienActu (idActu, nomCategorie) VALUES(?,?)', [idActu, nomCate], (err, result) => {
+    pool.query('INSERT INTO LienActu (idActu, nomCategorie) VALUES(?,?,?)', [idActu, nomCate], (err, result) => {
         if (err) {
             console.error(err);
             res.status(500).send('erreur serveur');
