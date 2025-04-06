@@ -1,24 +1,27 @@
 
 async function session() {
     const sessionCheck = await fetch('http://localhost:5000/check-session', {
-      credentials: 'include'
+        credentials: 'include'
     });
     const sessionData = await sessionCheck.json();
-  
-    if (sessionData.isLoggedIn) {
-      return sessionData.id;
-    } else {
-      return -1;
-    }
-  }
 
-  document.addEventListener('DOMContentLoaded', async function () {
+    if (sessionData.isLoggedIn) {
+        return sessionData.id;
+    } else {
+        return -1;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', async function () {
     const sess = await session();
     if (sess <= 0) {
-      window.location.href = "connexion.html"
+        window.location.href = "connexion.html"
     }
     console.log("L'id de la session:", sess)
-  });
+});
+// recupérer l'id de l'utilisateur
+sess = session();
+const idUser = sess.id;
 
 // initialisation informaions profil
 const profilData = {
@@ -40,8 +43,7 @@ const profilData = {
 };
 const profilSave = JSON.parse(JSON.stringify(profilData));
 
-// recupérer l'id de l'utilisateur
-const idUser = 4;
+
 
 // initialisatiobn grâce au mail donné en param de intialisationDataResident()
 /* /!\ Ajout de 2 fonction dans le fichier sql.js 
@@ -675,7 +677,7 @@ async function sauverAutres() { // Vérifier si différent (si oui modifier)
 
                 // Récupérer à nouveau l'ID de la résidence
                 newIdResidence = await recupidResidence(newIdVille, profilData.rue, profilData.numrue);
-            
+
             } catch (error) {
                 console.error('Erreur lors de la création de la résidence:', error);
                 return; // Arrêter la fonction en cas d'erreur
