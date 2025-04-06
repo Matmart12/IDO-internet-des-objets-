@@ -1,5 +1,36 @@
 console.log('début');
 
+
+async function session() {
+  const sessionCheck = await fetch('http://localhost:5000/check-session', {
+    credentials: 'include'
+  });
+  const sessionData = await sessionCheck.json();
+
+  if (sessionData.isLoggedIn) {
+    return sessionData.id;
+  } else {
+    return -1;
+  }
+}
+
+async function rechercheResidentAbo(id) {
+  try {
+    const response = await fetch(`http://localhost:5000/Recherche_Resident_id?id=${encodeURI(id)}`);
+    const data = await response.json();
+
+    if (data.length === 0) {
+      console.log('Aucun résident trouvé.');
+      return -1;
+    }
+
+    return data[0].abonnement;
+  } catch (error) {
+    console.error('Erreur:', error);
+    return -2;
+  }
+}
+
 // Sélection des éléments du DOM
 // Services
 const nomInputS = document.getElementById("nomS");
@@ -509,6 +540,20 @@ async function supprimerLiensActu (id) {
   }
 }
 
-afficherActus();
+document.addEventListener('DOMContentLoaded', async function () {
+  const sess = await session();
+  if (sess <= 0) {
+    window.location.href = "connexion.html"
+  }
+  res=await rechercheResidentAbo(sess);
+  console.log("L'id de la session:", sess)
+  console.log("L'abo de la session:", res)
+  if(res!="Maire"&& res!="Admin"){
+    alert("Vous n'avez pas accès à cette page");
+    window.location.href="pageacceuil.html";
+  }
+  afficherActus();
+});
+
 
 console.log('fin');
