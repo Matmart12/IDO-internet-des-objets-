@@ -1,4 +1,3 @@
-
 async function session() {
     const sessionCheck = await fetch('http://localhost:5000/check-session', {
         credentials: 'include'
@@ -28,7 +27,7 @@ const profilData = {
     email: 'vide@vide.fr',
     mdp: 'vide',
     age: 'vide',
-    abo: "gratuit", // Utilisez 'abo' pour correspondre à votre route
+    abo: "gratuit", 
     numrue: 1,
     rue: 'vide',
     ville: 'vide',
@@ -43,8 +42,6 @@ const profilSave = JSON.parse(JSON.stringify(profilData));
 
 
 // initialisatiobn grâce au mail donné en param de intialisationDataResident()
-/* /!\ Ajout de 2 fonction dans le fichier sql.js 
-(pour intialisationDataResidence et pourintialisationDataVille) */
 async function intialisationDataResident(idUser) {
     try {
         const response = await fetch(`http://localhost:5000/Recherche_Resident_id?id=${encodeURI(idUser)}`);
@@ -54,7 +51,6 @@ async function intialisationDataResident(idUser) {
         }
 
         const data = await response.json();
-        //id, prenom, nom, mail, mdp, age, abonnement, idResidence, adressephoto
 
         // Vérification si la réponse contient des données
         if (data.length > 0) {
@@ -272,6 +268,7 @@ function afficherInfo() {
     afficherVille();
     afficherDepart();
     afficherAbonnement();
+    mettreAJourTitre();
 }
 function afficherAbonnement() {
     const tr = document.createElement("tr");
@@ -306,7 +303,7 @@ function afficherMail() {
     const td2 = document.createElement("td");
     td2.innerHTML = `${profilData.email}`;
     tr.appendChild(td2);
-    /*
+
     const td3 = document.createElement("td");
     td3.innerHTML = `<input id="email"} " placeholder="nouveau email" type="mail" name="mail" >`;
     tr.appendChild(td3);
@@ -314,7 +311,7 @@ function afficherMail() {
     const td4 = document.createElement("td");
     td4.innerHTML = `<button id="modification" type="button" onclick="modifierElement('mail')">Modifier</button>`;
     tr.appendChild(td4);
-    */
+
     tableInfo.appendChild(tr);
 }
 function afficherMdP() {
@@ -531,7 +528,7 @@ function afficherPhoto() {
 
     const td2 = document.createElement("td");
     const img= document.createElement("img");
-    img.src= `${profilData.adressephoto}`;
+    img.src= "."+`${profilData.adressephoto}`;
     img.alt="Photo de profil";
     td2.appendChild(img)
     tr.appendChild(td2);
@@ -593,11 +590,11 @@ async function Sauv() {
     if (profilData.prenom != profilSave.prenom) {
         await sauverPrenom(profilData.prenom);
         profilSave.prenom = profilData.prenom;
-    }/*
+    }
     if (profilData.email != profilSave.email) {
         await sauverMail(profilData.email);
         profilSave.email = profilData.email;
-    }*/
+    }
     if (profilData.mdp != profilSave.mdp) {
         await sauverMdP(profilData.mdp);
         profilSave.mdp = profilData.mdp;
@@ -613,11 +610,11 @@ async function Sauv() {
     if (profilData.adressephoto != profilSave.adressephoto) {
         await sauverPhoto(profilData.adressephoto);
         profilSave.adressephoto = profilData.adressephoto;
-    }/*
+    }
     if (profilData.abo != profilSave.abo) {
         await sauverAbonnement(profilData.abo);
         profilSave.abo = profilData.abo;
-    }*/
+    }
     await sauverAutres();
 
     alert("Vos modifications ont bien été sauvegardées.");
@@ -636,7 +633,7 @@ async function sauverAutres() { // Vérifier si différent (si oui modifier)
                 const response = await fetch('http://localhost:5000/Creer_Ville', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ nom: profilData.ville, departement: profilData.departement })
+                    body: JSON.stringify({ nom: profilData.ville, département: profilData.departement })
                 });
                 const data = await response.text();
                 console.log(data); // Affiche le message de succès ou d'erreur
@@ -757,7 +754,6 @@ async function sauverPrenom(prenom) {
         console.error('Erreur lors de la mise à jour du prenom:', error);
     }
 };
-/*
 async function sauverMail(email) {
     try {
         const response = await fetch(`http://localhost:5000/modif_Resident_mail/${profilSave.id}`, {
@@ -777,7 +773,7 @@ async function sauverMail(email) {
     } catch (error) {
         console.error('Erreur lors de la mise à jour du mail:', error);
     }
-};*/
+};
 async function sauverMdP(mdp) {
     try {
         const response = await fetch(`http://localhost:5000/modif_Resident_mdp/${profilSave.id}`, {
@@ -857,7 +853,7 @@ async function sauverPhoto(adressephoto) {
     } catch (error) {
         console.error('Erreur lors de la mise à jour du adressephoto:', error);
     }
-};/*
+};
 async function sauverAbonnement(abo) {
     try {
         const response = await fetch(`http://localhost:5000/modif_Resident_abonnement/${profilSave.id}`, {
@@ -877,7 +873,7 @@ async function sauverAbonnement(abo) {
     } catch (error) {
         console.error('Erreur lors de la mise à jour du abo:', error);
     }
-};*/
+};
 // recupérer l'id de l'utilisateur
 
 document.addEventListener('DOMContentLoaded', async function () {
@@ -892,5 +888,14 @@ document.addEventListener('DOMContentLoaded', async function () {
     console.log('test3', profilSave);
     afficherInfo();
 });
+
+
+
+function mettreAJourTitre() {
+    const titre = document.querySelector('h2');
+    if (titre && profilData.nom !== 'vide' && profilData.prenom !== 'vide') {
+        titre.textContent = `${profilData.nom} ${profilData.prenom}`;
+    }
+}
 
 console.log("fin");
