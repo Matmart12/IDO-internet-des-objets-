@@ -547,7 +547,8 @@ function afficherPhoto() {
 // fonction de suppression (button)
 async function Supp() {
     const conf = confirm("Êtes-vous sûr de vouloir supprimer votre compte ?");
-    const id = idUser;
+    const id = await session();
+    console.log(id);
     if (conf) {
         try {
 
@@ -570,7 +571,7 @@ async function Supp() {
             alert('Votre compte a été supprimé avec succès.');
 
             // Redirection ou autre action après suppression
-            window.location.href = "accueuil.html"; // Exemple : rediriger vers la page d'accueil après suppression
+            window.location.href = "connexion.html"; // Exemple : rediriger vers la page d'accueil après suppression
 
 
         } catch (error) {

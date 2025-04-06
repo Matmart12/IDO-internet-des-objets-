@@ -550,7 +550,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   console.log("L'abo de la session:", res)
   if(res!="Maire"&& res!="Admin"){
     alert("Vous n'avez pas accès à cette page");
-    window.location.href="pageacceuil.html";
+    window.location.href="connexion.html";
   }
   afficherActus();
 });

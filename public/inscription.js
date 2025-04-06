@@ -1,7 +1,20 @@
-console.log("Script chargé !");
-document.addEventListener("DOMContentLoaded", function () {
-    console.log("DOM chargé"); // Vérifie si le DOM est bien chargé
+document.addEventListener('DOMContentLoaded', async function () {
+    try {
+        const response = await fetch('http://localhost:5000/check-session', {
+            credentials: 'include'
+        });
+        const data = await response.json();
 
+        if (data.isLoggedIn) {
+            await fetch('http://localhost:5000/deconnexion', {
+                method: 'GET',
+                credentials: 'include'
+            });
+            console.log('Utilisateur déconnecté automatiquement.');
+        }
+    } catch (error) {
+        console.error('Erreur lors de la vérification de la session:', error);
+    }
     document.getElementById('formInscription').addEventListener('submit', function (event) {
         event.preventDefault();  // Empêche la soumission du formulaire classique
         console.log("Le formulaire est soumis");
