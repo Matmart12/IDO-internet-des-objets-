@@ -636,7 +636,7 @@ async function sauverAutres() { // Vérifier si différent (si oui modifier)
                 const response = await fetch('http://localhost:5000/Creer_Ville', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ nom: profilData.ville, département: profilData.departement })
+                    body: JSON.stringify({ nom: profilData.ville, departement: profilData.departement })
                 });
                 const data = await response.text();
                 console.log(data); // Affiche le message de succès ou d'erreur
