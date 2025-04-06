@@ -22,6 +22,11 @@ app.use(session({
     }
 }));
 
+app.use((req, res, next) => {
+    console.log('Session:', req.session); // Debug
+    next();
+});
+    
 // Configuration CORS (une seule fois, placée tôt)
 app.use(cors({
     origin: ['null','http://localhost:5000', 'http://127.0.0.1:5000', 'http://localhost:3000', 'http://127.0.0.1:3000'],
@@ -264,11 +269,13 @@ app.post('/testconnexion', (req, res) => {
 
         if (results.length > 0 && results[0].abonnement !== "nonVerif") {
             const user = results[0];
-            req.session.userId = user.id;
-            res.json({
-                success: true,
-                userId: user.id,
-                abonnement: user.abonnement
+            req.session.userId = user.id; // Stockage de l'ID en session
+            req.session.save(err => { // Force la sauvegarde
+                if (err) console.error("Erreur session:", err);
+                res.json({
+                    success: true,
+                    userId: user.id // Ajout de l'ID utilisateur
+                });
             });
         } else {
             res.status(401).json({ 
