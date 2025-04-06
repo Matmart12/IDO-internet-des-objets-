@@ -68,7 +68,7 @@ async function session() {
 async function rechercherLieux() {
     console.log('Recherche des lieux');
     try {
-        const response = await fetch(`http://localhost:5000/Recherche_Service_Lien_?nomCate=Lieux`); // Remplace `1` par l'ID de la ville que tu veux
+        const response = await fetch(`http://localhost:5000/Recherche_Service_Lien_?nomCate=Lieux`); // 
         const data = await response.json();
 
         if (data.length == 0) {

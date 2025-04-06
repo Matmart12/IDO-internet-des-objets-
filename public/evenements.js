@@ -64,11 +64,11 @@ async function session() {
 
 
 // Fonction pour récupérer les événements d'une ville
-async function rechercherEvenements() {
+async function rechercherEvenements(id) {
     console.log('recherche événements');
     try {
         // Récupération des événements via l'API (GET)
-        const response = await fetch(`http://localhost:5000/Recherche_Actu_Ville?idVille=1`);  // Remplacer "1" par l'ID réel de la ville
+        const response = await fetch(`http://localhost:5000/Recherche_Actu_Ville?idVille=${id}`);  // Remplacer "1" par l'ID réel de la ville
         const data = await response.json();
 
         if (data.length === 0) {
@@ -98,12 +98,7 @@ async function afficherEvenements() {
     console.log('affichage événements');
 
     // Appel de la fonction pour récupérer les événements
-    const data = await rechercherEvenements();
-
-    if (data === -1) {
-        console.log('Aucun événement à afficher');
-        return;
-    }
+    
 
     const evenementList = document.getElementById('evenementList');
     // Vider la liste avant d'ajouter les événements (éviter les doublons)
@@ -135,11 +130,15 @@ async function afficherEvenements() {
        console.error('Ville non trouvée');
        return;
      }
+    const data = await rechercherEvenements(Ville.id);
 
+        if (data === -1) {
+            console.log('Aucun événement à afficher');
+            return;
+        }
     // Parcourir le tableau des événements et ajouter chaque événement au DOM
     if (Array.isArray(data)) {
         data.forEach((evenement) => {
-            if(evenement.idVille==Ville.id){
             const li = document.createElement("li");
             li.className = "evenement-item";
             li.innerHTML = `
@@ -148,7 +147,6 @@ async function afficherEvenements() {
                 <strong>Date :</strong> ${formaterDate(evenement.apparition)}<br>
             `;
             evenementList.appendChild(li);
-            }
         });
     } else {
         console.error('Les données récupérées ne sont pas un tableau valide.');
