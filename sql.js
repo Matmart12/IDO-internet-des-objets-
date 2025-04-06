@@ -287,8 +287,8 @@ app.post('/testconnexion', (req, res) => {
 });
 
 app.post('/Creer_Ville', (req, res) => {
-    const { nom, département } = req.body;
-    pool.query('INSERT INTO Ville (nom, pays, département) VALUES(?,?,?)', [nom, "France", département], (err, result) => {
+    const { nom, departement } = req.body;
+    pool.query('INSERT INTO Ville (nom, pays, departement) VALUES(?,?,?)', [nom, "France", departement], (err, result) => {
         if (err) {
             console.error(err);
             res.status(500).send('erreur serveur');
@@ -366,7 +366,7 @@ app.post('/Creer_Lien', (req, res) => {
 
 app.post('/Creer_LienActu', (req, res) => {
     const { idActu, nomCate } = req.body;
-    pool.query('INSERT INTO LienActu (idActu, nomCategorie) VALUES(?,?,?)', [idActu, nomCate], (err, result) => {
+    pool.query('INSERT INTO LienActu (idActu, nomCategorie) VALUES(?,?)', [idActu, nomCate], (err, result) => {
         if (err) {
             console.error(err);
             res.status(500).send('erreur serveur');
@@ -379,7 +379,7 @@ app.post('/Creer_LienActu', (req, res) => {
 
 app.post('/Creer_Actu', (req, res) => {
     const { nom, description, apparition, idVille } = req.body;
-    pool.query('INSERT INTO Actu (nom, descrip,apparition, idVille) VALUES(?,?,?,?)', [nom, description, apparition, idVille], (err, result) => {
+    pool.query('INSERT INTO Actu (nom, descrip, apparition, idVille) VALUES(?,?,?,?)', [nom, description, apparition, idVille], (err, result) => {
         if (err) {
             console.error(err);
             res.status(500).send('erreur serveur');
