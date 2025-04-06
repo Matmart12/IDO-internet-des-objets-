@@ -1,3 +1,25 @@
+
+async function session() {
+    const sessionCheck = await fetch('http://localhost:5000/check-session', {
+      credentials: 'include'
+    });
+    const sessionData = await sessionCheck.json();
+  
+    if (sessionData.isLoggedIn) {
+      return sessionData.id;
+    } else {
+      return -1;
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', async function () {
+    const sess = await session();
+    if (sess <= 0) {
+      window.location.href = "connexion.html"
+    }
+    console.log("L'id de la session:", sess)
+  });
+
 // initialisation informaions profil
 const profilData = {
     id: 0,
