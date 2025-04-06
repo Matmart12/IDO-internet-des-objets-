@@ -1,0 +1,48 @@
+<!DOCTYPE html> <!-- Déclare que le document est conforme à la norme HTML5 -->
+<html lang="en"> <!-- Spécifie que la langue principale du document est l'anglais -->
+<head>
+    <meta charset="UTF-8"> <!-- Définit l'encodage des caractères en UTF-8 pour gérer les textes multilingues -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Permet un affichage réactif sur les appareils mobiles -->
+    <title>Gestion des Services de la Ville</title> <!-- Titre affiché dans l'onglet du navigateur -->
+    <link rel="icon" href="data:,"> <!-- bloque la demande de favoricon.ico -->
+</head>
+<body>
+    <h1>Gestion des Services de la Ville</h1> <!-- Titre principal de la page-->
+
+    <!-- Formulaire pour ajouter un Service -->
+    <h2>Ajouter un Service :</h2>
+    <p>Pour les catégories, merci de mettre une virgule entre chaque nom de catégorie.</p>
+    <div id="service-form">
+        <input type="text" id="nomS" placeholder="Nom du service" />
+        <input type="text" id="descripS" placeholder="Description du service" /> 
+        <input type="text" id="catS" placeholder="Catégories" />
+        <input type="text" id="villeS" placeholder="idVille" />
+        <button onclick="ajouterService()">Ajouter</button> <!-- Bouton pour ajouter un service -->
+    </div>
+
+    <!-- Section pour afficher la liste des services -->
+    <div id="service-list">
+        <h2>Liste des Services :</h2>
+        <ul id="services"></ul>
+    </div>
+
+    <!-- Formulaire pour ajouter une Actu -->
+    <h2>Ajouter une Actu :</h2>
+    <p>Merci de mettre une virgule entre chaque nom de catégorie.</p>
+    <div id="service-form">
+        <input type="text" id="nomA" placeholder="Nom de l'Actu" />
+        <input type="text" id="descripA" placeholder="Description de l'Actu" /> 
+        <input type="datetime" id="DateA" placeholder="Date de l'Actu (aaaa-mm-jj)" />
+        <input type="text" id="catA" placeholder="Catégories" />
+        <input type="text" id="villeA" placeholder="idVille" />
+        <button onclick="ajouterActu()">Ajouter</button> <!-- Bouton pour ajouter une actu -->
+    </div>
+    <!-- Section pour afficher la liste des services -->
+    <div id="actu-list">
+        <h2>Liste des Actus :</h2>
+        <ul id="actus"></ul>
+    </div>
+    <!-- Inclusion du fichier JavaScript -->
+    <script src="gestion.js"></script> <!-- Lien vers le fichier JavaScript externe -->
+</body>
+</html>

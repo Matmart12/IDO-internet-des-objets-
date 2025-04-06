@@ -1,0 +1,136 @@
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and Layout */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7fc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column;
+}
+
+/* Bande bleue en haut */
+#topBar {
+    width: 100%;
+    height: 60px; /* Hauteur de la bande bleue */
+    background-color: #004aad; /* Couleur bleue */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10; /* S'assure que la barre reste au-dessus des autres éléments */
+}
+
+/* Logo dans la bande bleue */
+#topBar .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    margin-left: 20px; /* Espace du côté gauche */
+    line-height: 60px; /* Centrage vertical */
+}
+
+/* Header */
+#header {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+}
+
+#header .logo {
+    font-size: 30px; /* Augmenté la taille du logo */
+    font-weight: bold;
+    text-decoration: none;
+    color: #004aad;
+}
+
+/* Form Styles */
+#formConnexion {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 40px; /* Augmenté le padding */
+    width: 100%;
+    max-width: 500px; /* Augmenté la largeur maximale */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Ombre plus marquée */
+    text-align: center;
+    margin-top: 80px; /* Assurez-vous que le formulaire ne soit pas caché sous la barre bleue */
+}
+
+/* Form Title */
+legend h1 {
+    color: #333;
+    margin-bottom: 30px; /* Espacement augmenté */
+    font-size: 28px; /* Augmenté la taille de titre */
+}
+
+/* Input Fields */
+input {
+    width: 100%;
+    padding: 16px; /* Augmenté le padding */
+    margin: 12px 0; /* Augmenté l'espacement entre les champs */
+    border: 1px solid #ddd;
+    border-radius: 6px; /* Bords plus arrondis */
+    font-size: 18px; /* Augmenté la taille de la police */
+}
+
+input[type="text"], input[type="password"] {
+    background-color: #f9f9f9;
+}
+
+/* Button Styles */
+button {
+    width: 100%;
+    padding: 16px; /* Augmenté le padding */
+    margin: 14px 0; /* Augmenté l'espacement entre les boutons */
+    border: none;
+    border-radius: 6px; /* Bords plus arrondis */
+    font-size: 18px; /* Augmenté la taille de la police */
+    cursor: pointer;
+}
+
+button#Connecxion {
+    background-color: #004aad;
+    color: white;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+/* Link Styles */
+a {
+    text-decoration: none;
+    color: #004aad;
+    font-size: 16px; /* Augmenté la taille de la police */
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Remember me */
+input[type="checkbox"] {
+    margin-right: 8px; /* Augmenté l'espacement à droite */
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    #formConnexion {
+        padding: 25px; /* Augmenté le padding sur mobile */
+    }
+
+    legend h1 {
+        font-size: 24px; /* Augmenté la taille de titre sur mobile */
+    }
+
+    input, button {
+        font-size: 18px; /* Augmenté la taille de la police sur mobile */
+    }
+}

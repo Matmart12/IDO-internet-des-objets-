@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page de Connexion</title>
+    <link rel="icon" href="data:,"> <!-- bloque la demande de favoricon.ico --> 
+    <link rel="stylesheet" href="connexion.css">
+</head>
+<body>
+      
+    <!-- Header Section -->
+    <div id="topBar">
+        <a href="pageacceuiltest.html" class="logo">TARZONIS</a> <!-- Lien vers la pageacceuiltest.html -->
+    </div>
+
+    <!-- Login Form -->
+    <div id="formContainer"> <!-- anciennement formConnexion -->
+        <legend>
+            <h1>Connexion à votre compte</h1>
+        </legend>
+        <form id="formConnexion"> <!-- seul "formConnexion" ici -->
+            <input type="text" id="email" name="email" placeholder="mail" required>
+            <input type="password" id="password" name="password" placeholder="Mot de passe" required>
+            <button type="button" id="Connexion">Se connecter</button>
+        </form>
+        <div>
+            <p>Vous n'avez pas de compte ? <a href="inscription.html">S'inscrire</a></p>
+        </div>
+    </div>
+</body>
+<script src="connexion.js"></script>
+</html>
