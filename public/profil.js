@@ -19,9 +19,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
     console.log("L'id de la session:", sess)
 });
-// recupérer l'id de l'utilisateur
-sess = session();
-const idUser = sess.id;
 
 // initialisation informaions profil
 const profilData = {
@@ -877,11 +874,19 @@ async function sauverAbonnement(abo) {
         console.error('Erreur lors de la mise à jour du abo:', error);
     }
 };
+// recupérer l'id de l'utilisateur
 
-intialisationDataResident(idUser);
-console.log('test2', profilData);
-console.log('test3', profilSave);
-
-afficherInfo();
+document.addEventListener('DOMContentLoaded', async function () {
+    const sess = await session();
+    if (sess <= 0) {
+        window.location.href = "connexion.html"
+    }
+    console.log("L'id de la session:", sess)
+    const idUser = sess;
+    intialisationDataResident(idUser);
+    console.log('test2', profilData);
+    console.log('test3', profilSave);
+    afficherInfo();
+});
 
 console.log("fin");
