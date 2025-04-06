@@ -4,36 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Événements Locaux</title>
-    <link rel="icon" href="data:">
-    <style>
-        #evenementList {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .evenement-item {
-            background-color: #f9f9f9;
-            margin: 10px;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-        }
-
-        .evenement-item strong {
-            font-size: 1.2em;
-        }
-
-        .evenement-item em {
-            color: #555;
-        }
-    </style>
+    <link rel="stylesheet" href="evenements.css">
 </head>
 <body>
-    <h2>Événements Locaux</h2>
-    <ul id="evenementList">
-        <!-- Liste des événements sera insérée ici -->
-    </ul>
 
-    <script src="evenements.js"></script> <!-- Lien vers le fichier JavaScript -->
+    <!-- Barre en haut modifiée -->
+    <div class="header">
+        <a href="pageacceuiltest.html" class="button">TARZONIS</a>
+        <span>Découvrez les événements locaux de notre ville </span>
+    </div>
+
+    <!-- Liste des événements -->
+    <ul id="evenementList"></ul>
+
+    <script src="evenements.js"></script>
 </body>
 </html>
