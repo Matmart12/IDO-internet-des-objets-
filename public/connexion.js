@@ -73,6 +73,7 @@ async function testeconnexion() {
                 const sessionData = await sessionCheck.json();
                 
                 if (sessionData.isLoggedIn) {
+                    console.log("ID utilisateur:", data.userId); // Affiche l'ID
                     window.location.href = "accueil.html";
                 } else {
                     alert("Erreur de session");
