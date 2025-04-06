@@ -62,22 +62,6 @@ async function rechercheResidence(id) {
     }
 }
 
-async function rechercheVille(idVille) {
-    try {
-        const response = await fetch(`http://localhost:5000/Recherche_Ville_id?idVille=${encodeURI(idVille)}`);
-        const data = await response.json();
-
-        if (data.length === 0) {
-            console.log('Aucune ville trouvée.');
-            return -1;
-        }
-
-        return data[0].idVille;
-    } catch (error) {
-        console.error('Erreur:', error);
-        return -2;
-    }
-}
 
 
 
