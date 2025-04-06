@@ -383,6 +383,32 @@ app.post('/Creer_Actu', (req, res) => {
     })
 });
 
+app.post('/Creer_LienActu', (req, res) => {
+    const { idActu, nomCate } = req.body;
+    pool.query('INSERT INTO LienActu (idActu, nomCategorie) VALUES(?,?)', [idActu, nomCate], (err, result) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('erreur serveur');
+        }
+        else {
+            res.send('Lien ajouté avec succès!')
+        }
+    })
+});
+
+app.get('/Recherche_Categorie', (req, res) => {
+    const { nom } = req.query
+    pool.query('SELECT * FROM Categorie WHERE nom=?', [nom], (err, results) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('erreur serveur');
+        }
+        else {
+            res.json(results);
+        }
+    })
+});
+
 app.get('/Recherche_Resident_mail', (req, res) => {
     const { mail } = req.query
     pool.query('SELECT * FROM Resident WHERE mail=?', [mail], (err, results) => {
@@ -436,6 +462,32 @@ app.get('/Recherche_Ville_id', (req, res) => {
     })
 });
 
+app.get('/Recherche_Lien_service', (req, res) => {
+    const { id } = req.query
+    pool.query('SELECT nomCategorie FROM Lien WHERE idService = ?', [id], (err, results) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('erreur serveur');
+        }
+        else {
+            res.json(results);
+        }
+    })
+});
+
+app.get('/Recherche_LienActu_actu', (req, res) => {
+    const { id } = req.query
+    pool.query('SELECT nomCategorie FROM LienActu WHERE idActu = ?', [id], (err, results) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('erreur serveur');
+        }
+        else {
+            res.json(results);
+        }
+    })
+});
+
 app.get('/Recherche_Service_nom', (req, res) => {
     const { nom } = req.query
     pool.query('SELECT * FROM Service WHERE nom=?', [nom], (err, results) => {
@@ -465,6 +517,19 @@ app.get('/Recherche_Maire', (req, res) => {
 app.get('/Recherche_Service_Lien_', (req, res) => {
     const { nomCate } = req.query
     pool.query('SELECT * FROM Service s, Lien l WHERE s.id= l.idService AND l.nomCategorie=?', [nomCate], (err, results) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('erreur serveur');
+        }
+        else {
+            res.json(results);
+        }
+    })
+});
+
+app.get('/Recherche_Service_nom_descrip_idVille', (req, res) => {
+    const { nom, descrip, idVille} = req.query
+    pool.query('SELECT id FROM Service WHERE nom=? AND descrip=? AND idVille=?', [nom,descrip, idVille], (err, results) => {
         if (err) {
             console.error(err);
             res.status(500).send('erreur serveur');
@@ -516,6 +581,20 @@ app.get('/Recherche_Service', (req, res) => {
 app.get('/Recherche_Actu', (req, res) => {
     const {} = req.query
     pool.query('SELECT a.* FROM Actu a ORDER BY a.apparition',(err, results) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('erreur serveur');
+        }
+        else {
+            res.json(results);
+        }
+    })
+});
+
+app.get('/Recherche_Actu_nom_temps_descrip_idville', (req, res) => {
+    const {apparition, nom,descrip, idVille} = req.query
+    pool.query('SELECT id FROM Actu WHERE apparition=? AND nom=? AND descrip=? AND idVille=?', 
+        [apparition, nom,descrip, idVille], (err, results) => {
         if (err) {
             console.error(err);
             res.status(500).send('erreur serveur');
@@ -630,6 +709,17 @@ app.delete('/sup_Service_Ville/:idVille', (req, res) => {
 app.delete('/sup_Ville_id/:id', (req, res) => {
     const { id } = req.params;
     pool.query('DELETE FROM Ville WHERE id = ?', [id], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Erreur serveur');
+        }
+        res.status(200).json({ message: 'Élément supprimé avec succès' });
+    });
+});
+
+app.delete('/sup_Service_id/:id', (req, res) => {
+    const { id } = req.params;
+    pool.query('DELETE FROM Service WHERE id = ?', [id], (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).send('Erreur serveur');
