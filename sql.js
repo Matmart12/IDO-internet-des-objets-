@@ -1025,24 +1025,26 @@ app.put('/modif_Actu_Descrip/:id', (req, res) => {
     );
 });
 
-// Ne marche pas pour l'instant, c'est pour la recherche de la page d'acceuil vers la page recherche
-app.get('/recherche-actu', (req, res) => {
-    const terme = req.query.terme;
-    if (!terme) {
-        return res.status(400).json({ error: "Terme de recherche manquant" });
-    }
 
-    const query = 'SELECT * FROM Actu WHERE nom LIKE ? OR descrip LIKE ?';
-    const searchTerm = `%${terme}%`;
+app.get('/recherche-global', (req, res) => {
+    const { nom } = req.query;
+    const searchTerm = `%${nom}%`;
     
-    pool.query(query, [searchTerm, searchTerm], (err, results) => {
+    pool.query(`
+        SELECT 'service' AS type, id, nom, descrip, NULL AS apparition, idVille FROM Service WHERE nom LIKE ?
+        UNION ALL
+        SELECT 'actu' AS type, id, nom, descrip, apparition, idVille FROM Actu WHERE nom LIKE ?
+        ORDER BY CASE WHEN type = 'actu' THEN apparition ELSE NULL END DESC
+    `, [searchTerm, searchTerm], (err, results) => {
         if (err) {
             console.error(err);
-            return res.status(500).json({ error: "Erreur serveur" });
+            res.status(500).send('Erreur serveur');
+        } else {
+            res.json(results);
         }
-        res.json(results);
     });
 });
+
 
 app.use(cors({
     origin: ['http://localhost:5000', 'http://127.0.0.1:5000', 'http://localhost:3000', 'http://127.0.0.1:3000'],
