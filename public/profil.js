@@ -531,7 +531,7 @@ function afficherPhoto() {
 
     const td2 = document.createElement("td");
     const img= document.createElement("img");
-    img.src= "."+`${profilData.adressephoto}`;
+    img.src= `${profilData.adressephoto}`;
     img.alt="Photo de profil";
     td2.appendChild(img)
     tr.appendChild(td2);
