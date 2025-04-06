@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vérification d'Email</title>
+    <link rel="stylesheet" href="verifmail.css">
+</head>
+<body>
+
+    <header>
+        <a href="pageacceuil.html" class="logo">TARZONIS</a>
+    </header>
+
+    <main class="container">
+        <form id="formvérif" class="card" onsubmit="event.preventDefault();">
+            <h2>Vérification d'Email</h2>
+            <p>Les champs marqués d'une étoile sont obligatoires</p>
+
+            <input id="email" placeholder="Email*" type="email" name="email" required>
+            <input id="password" placeholder="Mot de passe*" type="password" name="password" required>
+
+            <div class="radio-group">
+                <label>Abonnement :</label><br>
+                <label><input type="radio" name="abonnement" value="Simple" required> Simple</label>
+                <label><input type="radio" name="abonnement" value="Maire" required> Maire</label>
+                <label><input type="radio" name="abonnement" value="Admin" required> Admin</label>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" onclick="Connect()">Se connecter ?</button>
+                <button type="submit">Vérifier</button>
+            </div>
+        </form>
+    </main>
+
+    <script src="vérifmail.js"></script>
+</body>
+</html>
