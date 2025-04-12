@@ -50,7 +50,7 @@ app.use('/api/auth', routes);
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'cytech0001',
+    password: 'votremdp',
     database: 'proj',
     waitForConnections: true,
     connectionLimit: 10, //limite de requetes en même temps
